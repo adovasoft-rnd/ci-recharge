@@ -26,7 +26,8 @@
         "optimize-autoloader": true,
         "sort-packages": true
     },
-    "require-dev": {},
+    "require-dev": {
+    },
     "autoload": {
         "psr-4": {
             "Hafiz\\": "src/"
