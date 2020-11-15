@@ -19,7 +19,7 @@ class Create extends BaseCommand
      *
      * @var string
      */
-    protected $group = 'CI4-RechargeI';
+    protected $group = 'CI4-Recharge';
 
     /**
      * The Command's name
@@ -61,12 +61,11 @@ class Create extends BaseCommand
     ];
 
     /**
-     * Creates a new migration file with the current timestamp.
+     * Creates a new configuration file with the current timestamp.
      *
-     * @param $insConfig
      * @param array $params
      */
-    public function run($insConfig, array $params = [])
+    public function run(array $params = [])
     {
         helper(['inflector', 'filesystem']);
 
@@ -108,7 +107,7 @@ class Create extends BaseCommand
 
         // Class name should be Pascal case
         $name = ucfirst($name);
-
+        $date = date("d F, Y h:i:s A");
         $template = <<<EOD
 <?php namespace $ins;
 
@@ -118,7 +117,7 @@ use CodeIgniter\Config\BaseConfig;
  * @class $name configuration.
  * @author CI-Recharge
  * @package Config
- *
+ * @created $date
  */
 
 class $name extends BaseConfig
