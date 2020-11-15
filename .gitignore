@@ -1,2 +1,12 @@
 /vendor/
 /.idea/
+spark
+license.txt
+/app/*
+/system/*
+/writable/*
+/public/*
+/tests/*
+.env
+phpunit.xml.dist
+
