@@ -33,7 +33,7 @@ class Create extends BaseCommand
      *
      * @var string
      */
-    protected $description = 'Creates a custom Entity file.';
+    protected $description = 'Creates a custom Entity file [NB: FOLDER NAMED `Entities` IS NECESSARY].';
 
     /**
      * the Command's usage
