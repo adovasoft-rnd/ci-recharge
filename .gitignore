@@ -10,3 +10,4 @@ license.txt
 .env
 phpunit.xml.dist
 
+/writable/

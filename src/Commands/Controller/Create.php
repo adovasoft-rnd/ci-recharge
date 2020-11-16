@@ -3,6 +3,7 @@
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 use Config\Services;
+use ReflectionClass;
 
 /**
  *
@@ -49,6 +50,7 @@ class Create extends BaseCommand
      */
     protected $arguments = [
         'controller_name' => 'The controller file name',
+        'rest' => "Make This a Rest Controller"
     ];
 
     /**
@@ -57,13 +59,17 @@ class Create extends BaseCommand
      * @var array
      */
     protected $options = [
-        '-n' => 'Set Configuration namespace',
+        '-n' => 'Set controller namespace',
+        '-b' => 'Set controller base/extends class',
+        '-s' => 'Set controller sub-directory after namespace',
+        '-rest' => 'Set controller sub-directory after namespace',
     ];
 
     /**
      * Creates a new configuration file with the current timestamp.
      *
      * @param array $params
+     * @throws \ReflectionException
      */
     public function run(array $params = [])
     {
@@ -72,67 +78,213 @@ class Create extends BaseCommand
         $name = array_shift($params);
 
         if (empty($name)) {
-            $name = CLI::prompt(lang('Config.nameConfig'));
+            $name = CLI::prompt(lang('Controller.nameController'));
         }
 
         if (empty($name)) {
-            CLI::error(lang('Config.badCreateName'));
+            CLI::error(lang('Controller.badCreateName'));
             return;
         }
 
-        $ns = $params['-n'] ?? CLI::getOption('n');
+        //Class Namespace
+        $ins = $params['-n'] ?? CLI::getOption('n');
+
+        //Extends Base Class
+        $base = $params['-b'] ?? CLI::getOption('b');
+
+        //Sub directory after Namespace
+        $sub = $params['-s'] ?? CLI::getOption('s');
+
+        //Rest Controller Style
+        $is_rest = CLI::getOption('rest');
+
         /** @var string real path $homepath */
         $homepath = APPPATH;
 
-        if (!empty($ns)) {
+        $package = "App";
+        $baseNameSpace = 'use App\Controllers\BaseController;';
+        $parentController = 'BaseController';
+
+        //Finding Namespace Location
+        if (!empty($ins)) {
             // Get all namespaces
             $namespaces = Services::autoloader()->getNamespace();
 
             foreach ($namespaces as $namespace => $path) {
-                if ($namespace === $ns) {
+                if ($namespace === $ins) {
                     $homepath = realpath(reset($path));
+                    $package = $ins;
                     break;
                 }
             }
-        } else {
-            $ins = "Config";
+        }
+        else {
+            $ins = "App";
         }
 
+        //Finding Base Class
+        if (!empty($base)) {
+            // Get all namespaces
+            $namespaces = Services::autoloader()->getNamespace();
+
+            foreach ($namespaces as $namespace => $path) {
+                if ($namespace == "App" || $namespace == $ins) {
+                    $full_path = realpath(reset($path)) . "/Controllers/" . $base . ".php";
+                    if (file_exists($full_path)) {
+                        $tempObj = new ReflectionClass($namespace . "\Controllers\\" . $base);
+                        $baseNameSpace = 'use ' . $tempObj->getName() . ";";
+                        $package = $ins;
+                        break;
+                    }
+                }
+            }
+        } else {
+            $base = $parentController;
+        }
 
         // Always use UTC/GMT so global teams can work together
         $fileName = ucfirst($name);
 
         // full path
-        $path = $homepath . '/Config/' . $fileName . '.php';
+        $path = $homepath . '/Controllers/' . $fileName . '.php';
 
         // Class name should be Pascal case
-        $name = ucfirst($name);
+        $name = pascalize($name);
         $date = date("d F, Y h:i:s A");
-        $template = <<<EOD
-<?php namespace $ins;
 
-use CodeIgniter\Config\BaseConfig;
+        //Basic Controller Template
+        $basicTemplate = <<<EOD
+<?php namespace $ins\Controllers;
+
+$baseNameSpace
 
 /**
- * @class $name configuration.
+ * @class $name
  * @author CI-Recharge
- * @package Config
+ * @package $package
  * @created $date
  */
 
-class $name extends BaseConfig
+
+class $name extends $base
 {
-		//
+    /**
+     * $name constructor
+     */
+    public function __construct() 
+    {
+    
+    }
+    
+    public function index()
+    {
+        echo 'Hello World!';
+    }
 }
 
 EOD;
 
+        //REST Controller Template
+        $restTemplate = <<<EOD
+<?php namespace $ins\Controllers;
+
+$baseNameSpace
+use CodeIgniter\RESTful\ResourceController;
+
+/**
+ * @class $name
+ * @author CI-Recharge
+ * @package $package
+ * @created $date
+ */
+
+
+class $name extends ResourceController
+{
+    /**
+     * $name constructor
+     */
+    public function __construct() 
+    {
+    
+    }
+    /**
+     * @return array|string
+     */
+    public function index()
+    {
+        
+        return view('');
+    }
+    
+    /**
+     * @return array|string
+     */
+    public function create()
+    {
+        
+        return view('');
+    }
+    
+    /**
+     * @return array|string
+     */
+    public function store()
+    {
+        
+        return ;
+    }
+    
+    /**
+     * @param int|null \$id
+     * @return array|string
+     */
+    public function show(int \$id = null){
+        
+        return view('');
+    }
+    
+    /**
+     * @param int|null \$id
+     * @return array|string
+     */
+    public function edit(int \$id = null)
+    {
+        
+        return view('');
+    }
+    
+    /**
+     * @param int|null \$id
+     * @return array|string
+     */
+    public function update(int \$id = null)
+    {
+        
+        return ;
+    }
+    
+    /**
+     * @param int|null \$id
+     * @return array|string
+     */
+    public function delete(int \$id = null)
+    {
+        
+        return ;
+    }   
+}
+
+EOD;
+
+        $template = ($is_rest == true) ? $restTemplate : $basicTemplate;
+
         if (!write_file($path, $template)) {
-            CLI::error(lang('Config.writeError', [$path]));
+            CLI::error(lang('Controller.writeError', [$path]));
             return;
         }
 
-        CLI::write('Created file: ' . CLI::color(str_replace($homepath, $ns, $path), 'green'));
+        CLI::write('Created file: ' . CLI::color(str_replace($homepath, $ins, $path), 'green'));
     }
 
 }
