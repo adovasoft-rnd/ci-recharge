@@ -2,17 +2,17 @@
 **This package is under-development. Not Ready for Use.**
 Location will be detected from autoloader service
 
-##Configuration File
+# Configuration File
 Create a basic config file at App namespace
-####Command
+### Command
 ```$xslt
 php spark make:config configuration_name
 ```
-####Example
+#### Example
 ```$xslt
 php spark make:config test
 ```
-####Output
+#### Output
 ```$xslt
 <?php namespace Config;
 
@@ -31,15 +31,15 @@ class Test extends BaseConfig
 }
 ```
 Add namespace to the configuration location 
-####Command
+#### Command
 ```$xslt
 php spark make:config configuration_name -n namespace_name
 ```
-####Example
+#### Example
 ```$xslt
 php spark make:config test -n Example
 ```
-####Output
+#### Output
 ```$xslt
 <?php namespace Example\Config;
 
@@ -58,17 +58,17 @@ class Test extends BaseConfig
 }
 ```
 
-##Controller File
+## Controller File
 Create a Basic controller file in App namespace
-####Command
+#### Command
 ```$xslt
 php spark make:controller controller_name
 ```
-####Example
+#### Example
 ```$xslt
 php spark make:controller test
 ```
-####Output
+#### Output
 ```$xslt
 <?php namespace App\Controllers;
 
@@ -99,15 +99,15 @@ class Test extends BaseController
 }
 ```
 Create a Basic controller file in Specific namespace
-####Command
+#### Command
 ```$xslt
 php spark make:controller controller_name -n namespace_name
 ```
-####Example
+#### Example
 ```$xslt
 php spark make:controller test3 -n Hafiz
 ```
-####Output
+#### Output
 ```$xslt
 <?php namespace Hafiz\Controllers;
 
@@ -139,15 +139,15 @@ class Test3 extends BaseController
 ```
 
 Create a Basic controller file in Specific namespace & specific Base/Parent Controller
-####Command
+#### Command
 ```$xslt
 php spark make:controller controller_name -n namespace_name -b base_controller
 ```
-####Example
+#### Example
 ```$xslt
 php spark make:controller test3 -n Hafiz -b BaseController
 ```
-####Output
+#### Output
 ```$xslt
 <?php namespace Hafiz\Controllers;
 
@@ -178,15 +178,15 @@ class Test3 extends BaseController
 }
 ```
 Create a REST controller file in App namespace
-####Command
+#### Command
 ```$xslt
 php spark make:controller controller_name -rest
 ```
-####Example
+#### Example
 ```$xslt
 php spark make:controller test3 -rest
 ```
-####Output
+#### Output
 ```$xslt
 <?php namespace App\Controllers;
 
@@ -277,20 +277,20 @@ class Test3 extends ResourceController
     }   
 }
 ```
-##REST Controller can be made with specific Namespace and specific Base Controller
+## REST Controller can be made with specific Namespace and specific Base Controller
 
 #Seeder File
 Create Clean Seeder File in App namespace
-####Command
+#### Command
 ```$xslt
 php spark make:seed seeder_name
 ```
-####Example
+#### Example
 ```$xslt
 php spark make:seed test
 ```
 
-####Output
+#### Output
 ```$xslt
 <?php namespace App\Database\Seeds;
 
@@ -332,16 +332,16 @@ class TestSeeder extends Seeder
 ```
 
 Create Clean Seeder File in App namespace
-####Command
+#### Command
 ```$xslt
 php spark make:seed seeder_name
 ```
-####Example
+#### Example
 ```$xslt
 php spark make:seed test -n Hafiz
 ```
 
-####Output
+#### Output
 ```$xslt
 <?php namespace Hafiz\Database\Seeds;
 
