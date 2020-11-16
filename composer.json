@@ -39,7 +39,6 @@
             "Hafiz\\": "src/"
         }
     },
-    "minimum-stability": "beta",
     "require": {
         "php": ">=7.3",
         "ext-mysqli": "*",

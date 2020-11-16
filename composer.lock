@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "feed8656cc495db93f8874abd289722d",
+    "content-hash": "4181b0b37f4f261188d07af167f23a92",
     "packages": [
         {
             "name": "codeigniter4/codeigniter4-standard",
@@ -310,7 +310,7 @@
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "beta",
+    "minimum-stability": "stable",
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
