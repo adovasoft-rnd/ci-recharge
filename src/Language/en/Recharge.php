@@ -23,6 +23,10 @@ return [
     'nameMigration' => 'Name the Migration File.',
     'badMigrationName' => 'You must provide a Migration file name.',
 
+    /* Filter */
+    'nameFilter' => 'Name the Filter File.',
+    'badFilterName' => 'You must provide a Filter file name.',
+
     /* All Purpose **/
     'writeError' => 'Error trying to create {0} file, check if the directory is writable.',
 

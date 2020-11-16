@@ -39,7 +39,7 @@ class Create extends BaseCommand
      *
      * @var string
      */
-    protected $usage = 'migrate:create [migration_name] [Options]';
+    protected $usage = 'make:migrate [migration_name] [Options]';
 
     /**
      * the Command's Arguments

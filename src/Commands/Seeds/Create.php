@@ -40,7 +40,7 @@ class Create extends BaseCommand
      *
      * @var string
      */
-    protected $usage = 'make:config [seed_name] [Options]';
+    protected $usage = 'make:seed [seed_name] [Options]';
 
     /**
      * the Command's Arguments
