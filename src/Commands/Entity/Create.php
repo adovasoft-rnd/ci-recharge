@@ -1,4 +1,4 @@
-<?php namespace Hafiz\Commands\Seeds;
+<?php namespace Hafiz\Commands\Entity;
 
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
@@ -26,21 +26,21 @@ class Create extends BaseCommand
      *
      * @var string
      */
-    protected $name = 'make:seed';
+    protected $name = 'make:entity';
 
     /**
      * the Command's short description
      *
      * @var string
      */
-    protected $description = 'Creates a database Seeder file.';
+    protected $description = 'Creates a custom Entity file.';
 
     /**
      * the Command's usage
      *
      * @var string
      */
-    protected $usage = 'make:config [seed_name] [Options]';
+    protected $usage = 'make:config [entity_name] [Options]';
 
     /**
      * the Command's Arguments
@@ -48,7 +48,7 @@ class Create extends BaseCommand
      * @var array
      */
     protected $arguments = [
-        'seed_name' => 'The Database Seeder file name',
+        'entity_name' => 'The database entity file name',
     ];
 
     /**
@@ -57,11 +57,11 @@ class Create extends BaseCommand
      * @var array
      */
     protected $options = [
-        '-n' => 'Set Seeder namespace',
+        '-n' => 'Set entity namespace',
     ];
 
     /**
-     * Creates a new seeder file with the current timestamp.
+     * Creates a new entity file with the current timestamp.
      *
      * @param array $params
      */
@@ -72,11 +72,12 @@ class Create extends BaseCommand
         $name = array_shift($params);
 
         if (empty($name)) {
-            $name = CLI::prompt(lang('Seeds.nameSeed'));
+            CLI::write('Folder name: ' . CLI::color('Entities', 'light_yellow') . ' is essential.');
+            $name = CLI::prompt(lang('Entity.nameEntity'));
         }
 
         if (empty($name)) {
-            CLI::error(lang('Seeds.badCreateName'));
+            CLI::error(lang('Entity.badCreateName'));
             return;
         }
 
@@ -100,52 +101,58 @@ class Create extends BaseCommand
 
 
         // Always use UTC/GMT so global teams can work together
-        $fileName = pascalize($name) . ((stripos('seeder', $name) == false) ? 'Seeder' : '');
+        $fileName = pascalize($name);
 
         // full path
-        $path = $homepath . '/Database/Seeds/' . $fileName . '.php';
+        $path = $homepath . '/Entities/' . $fileName . '.php';
 
         // Class name should be Pascal case
 
         $name = $fileName;
         $date = date("d F, Y h:i:s A");
         $template = <<<EOD
-<?php namespace $ins\Database\Seeds;
+<?php namespace $ins\Entities;
 
-use CodeIgniter\Database\Seeder;
-use Exception;
-use ReflectionException;
+use CodeIgniter\Entity;
 
 /**
- * @class $name Seeder.
+ * @class $name Entity.
  * @author CI-Recharge
  * @package $ins
  * @created $date
  */
 
-class $name extends Seeder
+class $name extends Entity
 {
-    public function run()
-    {
-        \$data = [];
+    /**
+     * Database Table Column names
+     * index = column 
+     * value = default
+     * Eg: ['balance' => 0.00, 'name' => null]
+     */
+    protected \$attributes = [];
     
-        // Using Model
-        \$model = new ExampleModel();
-        foreach (\$data as \$datum) {
-            try {
-                \$model->save(\$datum);
-            } catch (ReflectionException \$e) {
-                throw new Exception(\$e->getMessage());
-            }
-        }
-        
-        //Using Query Builder Class
-        try {
-            \$this->db->table('users')->insertBatch(\$data);
-        } catch (ReflectionException \$e) {
-                throw new Exception(\$e->getMessage());
-        }
-    }
+    /**
+     * Database Table Column To Property
+     * Mapper
+     * index = property
+     * value = column
+     * Eg: ['balance' => 'saving', 'phone' => 'mobile']
+     */
+    protected \$datamap = [];
+    
+    /**
+     * Property That will use timestamp
+     */
+    protected \$dates = [];
+    
+    /**
+     * Property Types Casted
+     * Eg: ['is_banned' => 'boolean',
+     * 'is_banned_nullable' => '?boolean']
+     */
+    protected \$casts => [];
+
 }
 
 EOD;

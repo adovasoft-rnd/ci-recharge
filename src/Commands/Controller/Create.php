@@ -34,7 +34,7 @@ class Create extends BaseCommand
      *
      * @var string
      */
-    protected $description = 'Creates a custom controller file.';
+    protected $description = 'Creates a new Controller file.';
 
     /**
      * the Command's usage
@@ -49,8 +49,7 @@ class Create extends BaseCommand
      * @var array
      */
     protected $arguments = [
-        'controller_name' => 'The controller file name',
-        'rest' => "Make This a Rest Controller"
+        'controller_name' => 'The Controller file name'
     ];
 
     /**

@@ -33,7 +33,7 @@ class Create extends BaseCommand
      *
      * @var string
      */
-    protected $description = 'Creates a custom configuration file.';
+    protected $description = 'Creates a application Configuration file.';
 
     /**
      * the Command's usage
@@ -48,7 +48,7 @@ class Create extends BaseCommand
      * @var array
      */
     protected $arguments = [
-        'config_name' => 'The configuration file name',
+        'config_name' => 'The Configuration file name',
     ];
 
     /**
