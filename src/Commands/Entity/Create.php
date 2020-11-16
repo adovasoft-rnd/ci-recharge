@@ -33,7 +33,7 @@ class Create extends BaseCommand
      *
      * @var string
      */
-    protected $description = 'Creates a custom Entity file [NB: FOLDER NAMED `Entities` IS NECESSARY].';
+    protected $description = 'Creates a entity file [NB: FOLDER NAMED `Entities` IS NECESSARY].';
 
     /**
      * the Command's usage
@@ -72,12 +72,11 @@ class Create extends BaseCommand
         $name = array_shift($params);
 
         if (empty($name)) {
-            CLI::write('Folder name: ' . CLI::color('Entities', 'light_yellow') . ' is essential.');
-            $name = CLI::prompt(lang('Entity.nameEntity'));
+            $name = CLI::prompt(lang('Recharge.nameEntity'));
         }
 
         if (empty($name)) {
-            CLI::error(lang('Entity.badCreateName'));
+            CLI::error(lang('Recharge.badEntityName'));
             return;
         }
 
@@ -158,7 +157,7 @@ class $name extends Entity
 EOD;
 
         if (!write_file($path, $template)) {
-            CLI::error(lang('Seeds.writeError', [$path]));
+            CLI::error(lang('Recharge.writeError', [$path]));
             return;
         }
 

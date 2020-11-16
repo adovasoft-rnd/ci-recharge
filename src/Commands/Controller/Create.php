@@ -4,6 +4,7 @@ use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 use Config\Services;
 use ReflectionClass;
+use ReflectionException;
 
 /**
  *
@@ -34,7 +35,7 @@ class Create extends BaseCommand
      *
      * @var string
      */
-    protected $description = 'Creates a new Controller file.';
+    protected $description = 'Creates a controller file.';
 
     /**
      * the Command's usage
@@ -68,7 +69,7 @@ class Create extends BaseCommand
      * Creates a new configuration file with the current timestamp.
      *
      * @param array $params
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function run(array $params = [])
     {
@@ -77,11 +78,11 @@ class Create extends BaseCommand
         $name = array_shift($params);
 
         if (empty($name)) {
-            $name = CLI::prompt(lang('Controller.nameController'));
+            $name = CLI::prompt(lang('Recharge.nameController'));
         }
 
         if (empty($name)) {
-            CLI::error(lang('Controller.badCreateName'));
+            CLI::error(lang('Recharge.badControllerName'));
             return;
         }
 
@@ -116,8 +117,7 @@ class Create extends BaseCommand
                     break;
                 }
             }
-        }
-        else {
+        } else {
             $ins = "App";
         }
 
@@ -279,7 +279,7 @@ EOD;
         $template = ($is_rest == true) ? $restTemplate : $basicTemplate;
 
         if (!write_file($path, $template)) {
-            CLI::error(lang('Controller.writeError', [$path]));
+            CLI::error(lang('Recharge.writeError', [$path]));
             return;
         }
 

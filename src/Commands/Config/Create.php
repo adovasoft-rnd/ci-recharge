@@ -33,7 +33,7 @@ class Create extends BaseCommand
      *
      * @var string
      */
-    protected $description = 'Creates a application Configuration file.';
+    protected $description = 'Creates a configuration file.';
 
     /**
      * the Command's usage
@@ -72,11 +72,11 @@ class Create extends BaseCommand
         $name = array_shift($params);
 
         if (empty($name)) {
-            $name = CLI::prompt(lang('Config.nameConfig'));
+            $name = CLI::prompt(lang('Recharge.nameConfig'));
         }
 
         if (empty($name)) {
-            CLI::error(lang('Config.badCreateName'));
+            CLI::error(lang('Recharge.badCreateName'));
             return;
         }
 
@@ -128,7 +128,7 @@ class $name extends BaseConfig
 EOD;
 
         if (!write_file($path, $template)) {
-            CLI::error(lang('Config.writeError', [$path]));
+            CLI::error(lang('Recharge.writeError', [$path]));
             return;
         }
 

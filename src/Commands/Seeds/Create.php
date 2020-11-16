@@ -33,7 +33,7 @@ class Create extends BaseCommand
      *
      * @var string
      */
-    protected $description = 'Creates a database Seeder file.';
+    protected $description = 'Creates a seeder file.';
 
     /**
      * the Command's usage
