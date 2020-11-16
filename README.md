@@ -2,9 +2,9 @@
 **This package is under-development. Not Ready for Use.**
 Location will be detected from autoloader service
 
-# Configuration File
+## Configuration File
 Create a basic config file at App namespace
-### Command
+#### Command
 ```$xslt
 php spark make:config configuration_name
 ```
@@ -279,7 +279,7 @@ class Test3 extends ResourceController
 ```
 ## REST Controller can be made with specific Namespace and specific Base Controller
 
-#Seeder File
+## Seeder File
 Create Clean Seeder File in App namespace
 #### Command
 ```$xslt
