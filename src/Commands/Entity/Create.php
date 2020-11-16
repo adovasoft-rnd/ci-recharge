@@ -151,7 +151,7 @@ class $name extends Entity
      * Eg: ['is_banned' => 'boolean',
      * 'is_banned_nullable' => '?boolean']
      */
-    protected \$casts => [];
+    protected \$casts = [];
 
 }
 
