@@ -5,7 +5,7 @@ use CodeIgniter\CLI\CLI;
 use Config\Services;
 
 /**
- * Creates a new migration file.
+ * Creates a new configuration file.
  * @package CodeIgniter\Commands
  * @extends BaseCommand
  */
@@ -22,28 +22,24 @@ class Create extends BaseCommand
 
     /**
      * The Command's name
-     *
      * @var string
      */
     protected $name = 'make:config';
 
     /**
-     * the Command's short description
-     *
+     * The Command's short description
      * @var string
      */
     protected $description = 'Creates a configuration file.';
 
     /**
-     * the Command's usage
-     *
+     * The Command's usage
      * @var string
      */
     protected $usage = 'make:config [config_name] [Options]';
 
     /**
-     * the Command's Arguments
-     *
+     * The Command's Arguments
      * @var array
      */
     protected $arguments = [
@@ -51,8 +47,7 @@ class Create extends BaseCommand
     ];
 
     /**
-     * the Command's Options
-     *
+     * The Command's Options
      * @var array
      */
     protected $options = [
@@ -60,7 +55,7 @@ class Create extends BaseCommand
     ];
 
     /**
-     * Creates a new configuration file with the current timestamp.
+     * Creates a new configuration file with The current timestamp.
      * @param array $params
      * @return void
      */
@@ -117,6 +112,7 @@ use CodeIgniter\Config\BaseConfig;
  * @class $name configuration.
  * @author CI-Recharge
  * @package Config
+ * @extend BaseConfig
  * @created $date
  */
 
