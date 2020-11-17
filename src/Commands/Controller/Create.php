@@ -135,7 +135,7 @@ class Create extends BaseCommand
         }
 
         // Always use UTC/GMT so global teams can work together
-        $fileName = ucfirst($name);
+        $fileName = pascalize($name);
 
         // full path
         $path = $homepath . '/Controllers/' . $fileName . '.php';
