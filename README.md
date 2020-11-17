@@ -23,8 +23,8 @@ This are the currently available features @1.0.0
 - Seeder File 
 - Seeder File with Namespace
 ### Notices
-**CI-Recharge Dosen't create any folder to store a files.**
-**For Entity a folder named `Entities` numst be created under namespace**
+**CI-Recharge Dose not create any folder to store files.**
+**For Entity a folder named `Entities` must be created under namespace**
 Example: 
 + app
     + Config
@@ -46,7 +46,7 @@ Detail Implementation of every command are given in `src\Example\` Folder.
 - **`md` represents Model name**
 - **`sd` represents Seeder name**
 
-Basic Syntax are given below for **make serise**:
+Basic Syntax are given below for **make series**:
 
 |Command|syntax|
 |-------|------|
