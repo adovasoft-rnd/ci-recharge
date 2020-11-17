@@ -27,6 +27,10 @@ return [
     'nameFilter' => 'Name the Filter File.',
     'badFilterName' => 'You must provide a Filter file name.',
 
+    /* Model */
+    'nameModel' => 'Name the Filter File.',
+    'badModelName' => 'You must provide a Filter file name.',
+
     /* All Purpose **/
     'writeError' => 'Error trying to create {0} file, check if the directory is writable.',
 
