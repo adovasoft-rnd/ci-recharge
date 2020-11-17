@@ -123,23 +123,48 @@ use CodeIgniter\Model;
 
 class $name extends Model
 {
-    protected \$table      = 'users';
+    /**
+     * Table Configuration
+     */
+    //protected \$DBGroup = '';
+    protected \$table      = '';
     protected \$primaryKey = 'id';
-
-    protected \$returnType     = 'array';
-    protected \$useSoftDeletes = true;
-
+    
+    /**
+     * Model & Table Column Customization
+     */
     protected \$allowedFields = ['field1', 'field2'];
-
     protected \$useTimestamps = false;
+    //protected \$dateFormat = '';
     protected \$createdField  = 'created_at';
     protected \$updatedField  = 'updated_at';
     protected \$deletedField  = 'deleted_at';
-
+    
+    /**
+     * Return Configuration
+     */
+    protected \$returnType     = 'object';
+    protected \$useSoftDeletes = true;
     protected \$validationRules    = [];
     protected \$validationMessages = [];
-    protected \$skipValidation     = false;
+    protected \$skipValidation     = true;
 
+    /**
+     * Event /Observer Configurations
+     */
+    protected \$allowCallbacks = true;
+    
+    protected \$beforeInsert = [];
+    
+    protected \$afterInsert = [];
+    
+    protected \$beforeUpdate = [];
+    
+    protected \$afterUpdate = [];
+    
+    protected \$afterFind = [];
+    
+    protected \$afterDelete = [];
 }
 
 EOD;
