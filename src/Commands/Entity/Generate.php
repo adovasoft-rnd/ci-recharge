@@ -35,14 +35,14 @@ class Generate extends BaseCommand
      * The Command's usage
      * @var string
      */
-    protected $usage = 'generate:entity [entity_name] [Options]';
+    protected $usage = 'generate:entity [table_name][Options]';
 
     /**
      * The Command's Arguments
      * @var array
      */
     protected $arguments = [
-        'entity_name' => 'The database entity file name',
+       'table_name' => 'The database table name',
     ];
 
     /**
@@ -51,7 +51,7 @@ class Generate extends BaseCommand
      */
     protected $options = [
         '-n' => 'Set entity namespace',
-        '-t' => 'Set entity table'
+        '-e' => 'Set entity name'
     ];
 
     /**
@@ -74,7 +74,11 @@ class Generate extends BaseCommand
             return;
         }
 
+        /** @var string Table Name */
+        $table = $params['-t'] ?? CLI::getOption('t');
+
         $ns = $params['-n'] ?? CLI::getOption('n');
+
         /** @var string real path $homepath */
         $homepath = APPPATH;
 

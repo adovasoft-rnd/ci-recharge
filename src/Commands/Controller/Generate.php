@@ -25,19 +25,19 @@ class Generate extends BaseCommand
      * The Command's name
      * @var string
      */
-    protected $name = 'make:controller';
+    protected $name = 'generate:controller';
 
     /**
      * The Command's short description
      * @var string
      */
-    protected $description = 'Creates a controller file.';
+    protected $description = 'Creates a controller from Model.';
 
     /**
      * The Command's usage
      * @var string
      */
-    protected $usage = 'make:controller [controller_name] [Options]';
+    protected $usage = 'generate:controller [controller_name] [Options]';
 
     /**
      * The Command's Arguments
