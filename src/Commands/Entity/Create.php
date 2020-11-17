@@ -88,7 +88,7 @@ class Create extends BaseCommand
                 }
             }
         } else {
-            $ins = "App";
+            $ns = "App";
         }
 
 
@@ -103,14 +103,15 @@ class Create extends BaseCommand
         $name = $fileName;
         $date = date("d F, Y h:i:s A");
         $template = <<<EOD
-<?php namespace $ins\Entities;
+<?php namespace $ns\Entities;
 
 use CodeIgniter\Entity;
 
 /**
- * @class $name Entity.
+ * @class $name
  * @author CI-Recharge
- * @package $ins
+ * @package $ns
+ * @extend Entity
  * @created $date
  */
 

@@ -40,9 +40,7 @@
         }
     },
     "require": {
-        "php": ">=7.3",
-        "ext-mysqli": "*",
-        "codeigniter4/codeigniter4-standard": "^1.0",
+        "php": ">=7.2.*",
         "codeigniter4/framework": "^4.0"
     }
 }

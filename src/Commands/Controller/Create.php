@@ -80,7 +80,7 @@ class Create extends BaseCommand
         }
 
         //Class Namespace
-        $ins = $params['-n'] ?? CLI::getOption('n');
+        $ns = $params['-n'] ?? CLI::getOption('n');
 
         //Extends Base Class
         $base = $params['-b'] ?? CLI::getOption('b');
@@ -99,19 +99,19 @@ class Create extends BaseCommand
         $parentController = 'BaseController';
 
         //Finding Namespace Location
-        if (!empty($ins)) {
+        if (!empty($ns)) {
             // Get all namespaces
             $namespaces = Services::autoloader()->getNamespace();
 
             foreach ($namespaces as $namespace => $path) {
-                if ($namespace === $ins) {
+                if ($namespace === $ns) {
                     $homepath = realpath(reset($path));
-                    $package = $ins;
+                    $package = $ns;
                     break;
                 }
             }
         } else {
-            $ins = "App";
+            $ns = "App";
         }
 
         //Finding Base Class
@@ -120,12 +120,12 @@ class Create extends BaseCommand
             $namespaces = Services::autoloader()->getNamespace();
 
             foreach ($namespaces as $namespace => $path) {
-                if ($namespace == "App" || $namespace == $ins) {
+                if ($namespace == "App" || $namespace == $ns) {
                     $full_path = realpath(reset($path)) . "/Controllers/" . $base . ".php";
                     if (file_exists($full_path)) {
                         $tempObj = new ReflectionClass($namespace . "\Controllers\\" . $base);
                         $baseNameSpace = 'use ' . $tempObj->getName() . ";";
-                        $package = $ins;
+                        $package = $ns;
                         break;
                     }
                 }
@@ -135,7 +135,7 @@ class Create extends BaseCommand
         }
 
         // Always use UTC/GMT so global teams can work together
-        $fileName = ucfirst($name);
+        $fileName = pascalize($name);
 
         // full path
         $path = $homepath . '/Controllers/' . $fileName . '.php';
@@ -146,7 +146,7 @@ class Create extends BaseCommand
 
         //Basic Controller Template
         $basicTemplate = <<<EOD
-<?php namespace $ins\Controllers;
+<?php namespace $ns\Controllers;
 
 $baseNameSpace
 
@@ -154,6 +154,7 @@ $baseNameSpace
  * @class $name
  * @author CI-Recharge
  * @package $package
+ * @extend $base
  * @created $date
  */
 
@@ -178,7 +179,7 @@ EOD;
 
         //REST Controller Template
         $restTemplate = <<<EOD
-<?php namespace $ins\Controllers;
+<?php namespace $ns\Controllers;
 
 $baseNameSpace
 use CodeIgniter\RESTful\ResourceController;
@@ -187,6 +188,7 @@ use CodeIgniter\RESTful\ResourceController;
  * @class $name
  * @author CI-Recharge
  * @package $package
+ * @extends ResourceController
  * @created $date
  */
 
@@ -276,7 +278,7 @@ EOD;
             return;
         }
 
-        CLI::write('Created file: ' . CLI::color(str_replace($homepath, $ins, $path), 'green'));
+        CLI::write('Created file: ' . CLI::color(str_replace($homepath, $ns, $path), 'green'));
     }
 
 }

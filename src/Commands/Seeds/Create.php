@@ -88,7 +88,7 @@ class Create extends BaseCommand
                 }
             }
         } else {
-            $ins = "App";
+            $ns = "App";
         }
 
 
@@ -103,16 +103,17 @@ class Create extends BaseCommand
         $name = $fileName;
         $date = date("d F, Y h:i:s A");
         $template = <<<EOD
-<?php namespace $ins\Database\Seeds;
+<?php namespace $ns\Database\Seeds;
 
 use CodeIgniter\Database\Seeder;
 use Exception;
 use ReflectionException;
 
 /**
- * @class $name Seeder.
+ * @class $name
  * @author CI-Recharge
- * @package $ins
+ * @package $ns
+ * @extend Seeder
  * @created $date
  */
 
