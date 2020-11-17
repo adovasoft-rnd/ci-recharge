@@ -23,7 +23,7 @@ This are the currently available features @1.0.0
 - Seeder File 
 - Seeder File with Namespace
 ### Notices
-**CI-Recharge Dose not create any folder to store files.**
+**CI-Recharge Dose not create any folder to store file.**
 **For Entity a folder named `Entities` must be created under namespace**
 Example: 
 + app
@@ -61,7 +61,7 @@ Basic Syntax are given below for **make series**:
 |REST Controller with Parent|`php spark make:controller cont -b base -rest`|
 |REST Controller with Parent and Namespace|`php spark make:controller cont -n ns -b base -rest`|
 |Entity|`php spark make:entity en`|
-|Entiy with Namespace|`php spark make:entity en -n ns`|
+|Entity with Namespace|`php spark make:entity en -n ns`|
 |Filter|`php spark make:filter fn`|
 |Filter with Namespace|`php spark make:filter fn -n ns`|
 |Migration|`php spark make:migrate mg`|

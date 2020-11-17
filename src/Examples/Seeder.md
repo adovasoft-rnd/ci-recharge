@@ -7,7 +7,7 @@ php spark make:seed seeder_name
 ```
 #### Example
 ```$xslt
-php spark make:seed test
+php spark make:seed Test
 ```
 
 #### Output
@@ -32,7 +32,7 @@ class TestSeeder extends Seeder
         $data = [];
     
         // Using Model
-        $model = new ExampleModel();
+        $model = new TestModel();
         foreach ($data as $datum) {
             try {
                 $model->save($datum);
@@ -43,47 +43,46 @@ class TestSeeder extends Seeder
         
         //Using Query Builder Class
         try {
-            $this->db->table('users')->insertBatch($data);
+            $this->db->table('table_name')->insertBatch($data);
         } catch (ReflectionException $e) {
                 throw new Exception($e->getMessage());
         }
     }
 }
 ```
-
-Create Clean Seeder File in App namespace
-#### Command
+#### Create a Seed file specific namespace
+##### Command
 ```$xslt
-php spark make:seed seeder_name
+php spark make:seed seed_name -n namespace_name
 ```
-#### Example
-```$xslt
-php spark make:seed test -n Hafiz
+##### Example
 ```
-
-#### Output
-```$xslt
-<?php namespace Hafiz\Database\Seeds;
+php spark make:seed Country -n robin
+```
+##### Output
+```
+<?php namespace robin\Database\Seeds;
 
 use CodeIgniter\Database\Seeder;
 use Exception;
 use ReflectionException;
 
 /**
- * @class TestSeeder Seeder.
+ * @class CountrySeeder
  * @author CI-Recharge
- * @package App
- * @created 16 November, 2020 08:06:05 AM
+ * @package robin
+ * @extend Seeder
+ * @created 17 November, 2020 05:42:58 AM
  */
 
-class TestSeeder extends Seeder
+class CountrySeeder extends Seeder
 {
     public function run()
     {
         $data = [];
     
         // Using Model
-        $model = new ExampleModel();
+        $model = new CountryModel();
         foreach ($data as $datum) {
             try {
                 $model->save($datum);
@@ -94,10 +93,11 @@ class TestSeeder extends Seeder
         
         //Using Query Builder Class
         try {
-            $this->db->table('users')->insertBatch($data);
+            $this->db->table('table_name')->insertBatch($data);
         } catch (ReflectionException $e) {
                 throw new Exception($e->getMessage());
         }
     }
 }
+
 ```
