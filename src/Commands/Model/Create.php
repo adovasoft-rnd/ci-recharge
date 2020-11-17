@@ -111,6 +111,7 @@ use CodeIgniter\Model;
  * @class $name.
  * @author CI-Recharge
  * @package $ns
+ * @extend Model
  * @created $date
  */
 

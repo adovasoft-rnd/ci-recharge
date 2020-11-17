@@ -109,7 +109,7 @@ class Create extends BaseCommand
 use CodeIgniter\Config\BaseConfig;
 
 /**
- * @class $name configuration.
+ * @class $name
  * @author CI-Recharge
  * @package $ns
  * @extend BaseConfig

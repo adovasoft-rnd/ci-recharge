@@ -110,6 +110,7 @@ use CodeIgniter\Database\Migration;
  * @class $name
  * @author CI-Recharge
  * @package $ns
+ * @extends Migration
  * @created $date
  */
 class {name} extends Migration

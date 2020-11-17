@@ -111,9 +111,10 @@ use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\Services;
 
 /**
- * @class $name filter.
+ * @class $name 
  * @author CI-Recharge
  * @package $ns
+ * @extend Filter.
  * @created $date
  */
 
