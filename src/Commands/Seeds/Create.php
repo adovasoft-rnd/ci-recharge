@@ -100,7 +100,7 @@ class Create extends BaseCommand
 
         // Class name should be Pascal case
 
-        $name = $fileName;
+        $name = pascalize($name);
         $date = date("d F, Y h:i:s A");
         $template = <<<EOD
 <?php namespace $ns\Database\Seeds;
@@ -110,21 +110,21 @@ use Exception;
 use ReflectionException;
 
 /**
- * @class $name
+ * @class $fileName
  * @author CI-Recharge
  * @package $ns
  * @extend Seeder
  * @created $date
  */
 
-class $name extends Seeder
+class $fileName extends Seeder
 {
     public function run()
     {
         \$data = [];
     
         // Using Model
-        \$model = new ExampleModel();
+        $model = new $nameModel();
         foreach (\$data as \$datum) {
             try {
                 \$model->save(\$datum);
@@ -135,7 +135,7 @@ class $name extends Seeder
         
         //Using Query Builder Class
         try {
-            \$this->db->table('users')->insertBatch(\$data);
+            \$this->db->table('table_name')->insertBatch(\$data);
         } catch (ReflectionException \$e) {
                 throw new Exception(\$e->getMessage());
         }
