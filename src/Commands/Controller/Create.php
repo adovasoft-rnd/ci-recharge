@@ -7,46 +7,40 @@ use ReflectionClass;
 use ReflectionException;
 
 /**
- *
- * Creates a new migration file.
- *
+ * Creates a new Controller file.
  * @package CodeIgniter\Commands
+ * @extend BaseCommand
  */
 class Create extends BaseCommand
 {
 
     /**
-     * The group the command is lumped under
-     * when listing commands.
-     *
+     * The group command is heading under all
+     * commands will be listed
      * @var string
      */
     protected $group = 'CI4-Recharge';
 
     /**
      * The Command's name
-     *
      * @var string
      */
     protected $name = 'make:controller';
 
     /**
-     * the Command's short description
-     *
+     * The Command's short description
      * @var string
      */
     protected $description = 'Creates a controller file.';
 
     /**
-     * the Command's usage
-     *
+     * The Command's usage
      * @var string
      */
     protected $usage = 'make:controller [controller_name] [Options]';
 
     /**
-     * the Command's Arguments
-     *
+     * The Command's Arguments
      * @var array
      */
     protected $arguments = [
@@ -54,8 +48,7 @@ class Create extends BaseCommand
     ];
 
     /**
-     * the Command's Options
-     *
+     * The Command's Options
      * @var array
      */
     protected $options = [
@@ -66,10 +59,10 @@ class Create extends BaseCommand
     ];
 
     /**
-     * Creates a new configuration file with the current timestamp.
-     *
+     * Creates a new Controller file with the current timestamp.
      * @param array $params
      * @throws ReflectionException
+     * @return void
      */
     public function run(array $params = [])
     {
