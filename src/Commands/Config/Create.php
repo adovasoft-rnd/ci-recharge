@@ -3,6 +3,7 @@
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 use Config\Services;
+use Hafiz\Libraries\DBHandler;
 
 /**
  * Creates a new configuration file.
@@ -12,7 +13,6 @@ use Config\Services;
 
 class Create extends BaseCommand
 {
-
     /**
      * The group command is heading under all
      * commands will be listed
@@ -61,6 +61,8 @@ class Create extends BaseCommand
      */
     public function run(array $params = [])
     {
+        $db = new DBHandler();
+
         helper(['inflector', 'filesystem']);
 
         $name = array_shift($params);
