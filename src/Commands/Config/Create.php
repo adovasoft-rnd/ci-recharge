@@ -90,7 +90,7 @@ class Create extends BaseCommand
                 }
             }
         } else {
-            $ins = "Config";
+            $ns = "Config";
         }
 
 
@@ -104,14 +104,14 @@ class Create extends BaseCommand
         $name = ucfirst($name);
         $date = date("d F, Y h:i:s A");
         $template = <<<EOD
-<?php namespace $ins;
+<?php namespace $ns;
 
 use CodeIgniter\Config\BaseConfig;
 
 /**
  * @class $name configuration.
  * @author CI-Recharge
- * @package Config
+ * @package $ns
  * @extend BaseConfig
  * @created $date
  */
