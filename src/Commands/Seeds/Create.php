@@ -5,46 +5,40 @@ use CodeIgniter\CLI\CLI;
 use Config\Services;
 
 /**
- *
- * Creates a new migration file.
- *
+ * Creates a new seeder file.
  * @package CodeIgniter\Commands
+ * @extend BaseCommand
  */
 class Create extends BaseCommand
 {
 
     /**
-     * The group the command is lumped under
-     * when listing commands.
-     *
+     * The group command is heading under all
+     * commands will be listed
      * @var string
      */
     protected $group = 'CI4-Recharge';
 
     /**
      * The Command's name
-     *
      * @var string
      */
     protected $name = 'make:seed';
 
     /**
-     * the Command's short description
-     *
+     * The Command's short description
      * @var string
      */
     protected $description = 'Creates a seeder file.';
 
     /**
-     * the Command's usage
-     *
+     * The Command's usage
      * @var string
      */
     protected $usage = 'make:seed [seed_name] [Options]';
 
     /**
-     * the Command's Arguments
-     *
+     * The Command's Arguments
      * @var array
      */
     protected $arguments = [
@@ -52,8 +46,7 @@ class Create extends BaseCommand
     ];
 
     /**
-     * the Command's Options
-     *
+     * The Command's Options
      * @var array
      */
     protected $options = [
@@ -61,9 +54,9 @@ class Create extends BaseCommand
     ];
 
     /**
-     * Creates a new seeder file with the current timestamp.
-     *
+     * Creates a new seeder file with The current timestamp.
      * @param array $params
+     * @return void
      */
     public function run(array $params = [])
     {
@@ -99,7 +92,7 @@ class Create extends BaseCommand
         }
 
 
-        // Always use UTC/GMT so global teams can work together
+        // Always use UTC/GMT so global teams can work togeTher
         $fileName = pascalize($name) . ((stripos('seeder', $name) == false) ? 'Seeder' : '');
 
         // full path
