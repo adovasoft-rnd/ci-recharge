@@ -32,6 +32,9 @@ return [
     'badModelName' => 'You must provide a Filter file name.',
 
     /* All Purpose **/
+    'TablesNotFound' => 'Database doesn\'t have any table.',
+    'TableNotExists' => 'Table named {0} doesn\'t Exist.',
+
     'writeError' => 'Error trying to create {0} file, check if the directory is writable.',
 
 ];

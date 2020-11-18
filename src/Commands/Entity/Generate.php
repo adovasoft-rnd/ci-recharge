@@ -1,18 +1,17 @@
-<?php namespace Hafiz\Commands\Config;
+<?php namespace Hafiz\Commands\Entity;
 
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 use Config\Services;
-use Hafiz\Libraries\DBHandler;
 
 /**
- * Creates a new configuration file.
+ * Creates a new Entity file.
  * @package CodeIgniter\Commands
- * @extends BaseCommand
+ * @extend BaseCommand
  */
-
-class Create extends BaseCommand
+class Generate extends BaseCommand
 {
+
     /**
      * The group command is heading under all
      * commands will be listed
@@ -24,26 +23,26 @@ class Create extends BaseCommand
      * The Command's name
      * @var string
      */
-    protected $name = 'make:config';
+    protected $name = 'generate:entity';
 
     /**
      * The Command's short description
      * @var string
      */
-    protected $description = 'Creates a configuration file.';
+    protected $description = 'Creates a entity file from DB Table.';
 
     /**
      * The Command's usage
      * @var string
      */
-    protected $usage = 'make:config [config_name] [Options]';
+    protected $usage = 'generate:entity [table_name][Options]';
 
     /**
      * The Command's Arguments
      * @var array
      */
     protected $arguments = [
-        'config_name' => 'The Configuration file name',
+       'table_name' => 'The database table name',
     ];
 
     /**
@@ -51,30 +50,32 @@ class Create extends BaseCommand
      * @var array
      */
     protected $options = [
-        '-n' => 'Set Configuration namespace',
+        '-n' => 'Set entity namespace',
+        '-e' => 'Set entity name'
     ];
 
     /**
-     * Creates a new configuration file with The current timestamp.
+     * Creates a new entity file with the current timestamp.
      * @param array $params
      * @return void
      */
     public function run(array $params = [])
     {
-        $db = new DBHandler();
-
         helper(['inflector', 'filesystem']);
 
         $name = array_shift($params);
 
         if (empty($name)) {
-            $name = CLI::prompt(lang('Recharge.nameConfig'));
+            $name = CLI::prompt(lang('Recharge.nameEntity'));
         }
 
         if (empty($name)) {
-            CLI::error(lang('Recharge.badCreateName'));
+            CLI::error(lang('Recharge.badEntityName'));
             return;
         }
+
+        /** @var string Table Name */
+        $table = $params['-t'] ?? CLI::getOption('t');
 
         $ns = $params['-n'] ?? CLI::getOption('n');
 
@@ -92,35 +93,64 @@ class Create extends BaseCommand
                 }
             }
         } else {
-            $ns = "Config";
+            $ns = "App";
         }
 
 
         // Always use UTC/GMT so global teams can work together
-        $fileName = ucfirst($name);
+        $fileName = pascalize($name);
 
-        // full path
-        $path = $homepath . '/Config/' . $fileName . '.php';
+        // Full path
+        $path = $homepath . '/Entities/' . $fileName . '.php';
 
         // Class name should be Pascal case
-        $name = ucfirst($name);
+
+        $name = $fileName;
         $date = date("d F, Y h:i:s A");
         $template = <<<EOD
-<?php namespace $ns;
+<?php namespace $ns\Entities;
 
-use CodeIgniter\Config\BaseConfig;
+use CodeIgniter\Entity;
 
 /**
  * @class $name
  * @author CI-Recharge
  * @package $ns
- * @extend BaseConfig
+ * @extend Entity
  * @created $date
  */
 
-class $name extends BaseConfig
+class $name extends Entity
 {
-		//
+    /**
+     * Database Table Column names
+     * index = column 
+     * value = default
+     * Eg: ['balance' => 0.00, 'name' => null]
+     */
+    protected \$attributes = [];
+    
+    /**
+     * Database Table Column To Property
+     * Mapper
+     * index = property
+     * value = column
+     * Eg: ['balance' => 'saving', 'phone' => 'mobile']
+     */
+    protected \$datamap = [];
+    
+    /**
+     * Property That will use timestamp
+     */
+    protected \$dates = [];
+    
+    /**
+     * Property Types Casted
+     * Eg: ['is_banned' => 'boolean',
+     * 'is_banned_nullable' => '?boolean']
+     */
+    protected \$casts = [];
+
 }
 
 EOD;
