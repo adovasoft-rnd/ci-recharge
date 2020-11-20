@@ -42,44 +42,10 @@ class DBHandler
         $file->writeTable($table, $tableInfo[0], $tableInfo[1]);
     }
 
-
-    public function generateDBMigration(): void
-    {
-        $tables = $this->getTableNames();
-        foreach ($tables as $table) {
-            $tableInfo = $this->getTableInfos($table);
-
-            $file = new FileHandler();
-
-            $file->writeTable($table, $tableInfo[0], $tableInfo[1]);
-        }
-    }
-
     /**
+     * @param string $table
      * @return array
      */
-    public function getTableNames(): ?array
-    {
-        $tables = $this->db->listTables();
-
-        if (empty($tables)) {
-            CLI::error(lang('Recharge.TablesNotFound'));
-            exit(1);
-        }
-
-        return $tables;
-    }
-
-    public function checkTableExist(string $table): ?bool
-    {
-        if (!$this->db->tableExists($table)) {
-            CLI::error(lang('Recharge.TableNotExists'));
-            exit(1);
-        }
-
-        return true;
-    }
-
     public function getTableInfos(string $table): array
     {
         $fields = $this->generateField($table);
@@ -90,7 +56,6 @@ class DBHandler
 
         return [$fields, $indexes, $relations];
     }
-
 
     /**
      * @param string $table
@@ -152,25 +117,6 @@ class DBHandler
     }
 
     /**
-     * @param array $arr
-     * @return string
-     */
-    protected function getGluedString(array $arr): string
-    {
-        //array consist of one element
-        if (count($arr) == 1)
-            return "'" . strval(array_shift($arr)) . "'";
-
-        else {
-            $str = '';
-            foreach ($arr as $item)
-                $str .= "'$item', ";
-
-            return "[ " . rtrim($str, ', ') . "]";
-        }
-    }
-
-    /**
      * @param string $table
      * @return string|null
      */
@@ -208,6 +154,32 @@ class DBHandler
     }
 
     /**
+     * @param array $arr
+     * @param bool $is_assoc
+     * @return string
+     */
+    protected function getGluedString(array $arr, bool $is_assoc = false): string
+    {
+        //array consist of one element
+        if (count($arr) == 1)
+            return "'" . strval(array_shift($arr)) . "'";
+
+        else {
+            $str = '';
+            if (!$is_assoc) {
+                foreach ($arr as $item)
+                    $str .= "'$item', ";
+
+            } else {
+                foreach ($arr as $index => $item)
+                    $str .= "'$index' => '$item', ";
+            }
+
+            return "[ " . rtrim($str, ', ') . "]";
+        }
+    }
+
+    /**
      * @param string $table
      * @return string|null
      */
@@ -219,6 +191,50 @@ class DBHandler
             array_push($keyArray, "\n\t\t\$this->forge->addForeignKey('$key->column_name','$key->foreign_table_name','$key->foreign_column_name','CASCADE','CASCADE');");
 
         return implode('', array_unique($keyArray));
+    }
+
+    /**
+     *
+     */
+    public function generateDBMigration(): void
+    {
+        $tables = $this->getTableNames();
+        foreach ($tables as $table) {
+            $tableInfo = $this->getTableInfos($table);
+
+            $file = new FileHandler();
+
+            $file->writeTable($table, $tableInfo[0], $tableInfo[1]);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getTableNames(): ?array
+    {
+        $tables = $this->db->listTables();
+
+        if (empty($tables)) {
+            CLI::error(lang('Recharge.TablesNotFound'));
+            exit(1);
+        }
+
+        return $tables;
+    }
+
+    /**
+     * @param string $table
+     * @return bool|null
+     */
+    public function checkTableExist(string $table): ?bool
+    {
+        if (!$this->db->tableExists($table)) {
+            CLI::error(lang('Recharge.TableNotExists'));
+            exit(1);
+        }
+
+        return true;
     }
 
     /**
@@ -241,4 +257,37 @@ class DBHandler
         return $container;
     }
 
+    /**
+     * @param string $table
+     * @return array
+     */
+    public function getEntityProperties(string $table): array
+    {
+        $attributes = [];
+        $dates = [];
+        $casts = [];
+
+        $fields = $this->db->getFieldData($table);
+
+        foreach ($fields as $field) {
+            $attributes[] = $field->name;
+
+            //property dates
+            if ($field->type == 'datetime') {
+                $dates[] = $field->name;
+                $casts[$field->name] = (($field->nullable) ? "?" : '') . "datetime";
+            }
+
+            //property cast
+            if ($field->type == 'tinyint')
+                $casts[$field->name] = (($field->nullable) ? "?" : '') . "boolean";
+
+        }
+
+        return [
+            'attributes' => str_replace(['[', ']'], '', $this->getGluedString($attributes)),
+            'dates' => str_replace(['[', ']'], '', $this->getGluedString($dates)),
+            'casts' => str_replace(['[', ']'], '', $this->getGluedString($casts, true)),
+        ];
+    }
 }

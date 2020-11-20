@@ -42,7 +42,7 @@ class Generate extends BaseCommand
      * @var array
      */
     protected $arguments = [
-       'table_name' => 'The database table name',
+        'table_name' => 'The database table name',
     ];
 
     /**

@@ -61,8 +61,8 @@ class Create extends BaseCommand
     /**
      * Creates a new Controller file with the current timestamp.
      * @param array $params
-     * @throws ReflectionException
      * @return void
+     * @throws ReflectionException
      */
     public function run(array $params = [])
     {

@@ -6,18 +6,6 @@ use Config\Services;
 class FileHandler
 {
     /**
-     * Take a File Location with file name then remove file name
-     * return a Directory Location
-     *
-     * @param string $filePath
-     * @return string
-     */
-    protected function pathFromLocation(string $filePath): string
-    {
-        return dirname($filePath);
-    }
-
-    /**
      * @param string $table
      * @param string $fields
      * @param string $keys
@@ -72,23 +60,6 @@ class FileHandler
      * @param string $path
      * @return bool
      */
-    public function checkFolderExist(string $path = ''): bool
-    {
-        $path = $this->pathFromLocation($path);
-
-        if (!is_dir($path)) {
-            CLI::error("Directory: " . $path . " is Invalid or doesn't Exists.");
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * @param string $path
-     * @return bool
-     */
     public function checkFileExist(string $path): bool
     {
         if (is_file($path)) {
@@ -108,23 +79,47 @@ class FileHandler
      * @param string $path
      * @return bool
      */
-    public function createDirectory(string $path = ''): bool
+    public function verifyDirectory(string $path = ''): bool
     {
         $targetDir = $this->pathFromLocation($path);
         $permission = null;
 
         //if folder already exists
-        if ($this->checkFolderExist($path) == true) {
-            $permission = CLI::prompt("Directory already exists.Overwrite? ", ['yes', 'no'], 'required|in_list[yes,no]');
-            if ($permission == 'no') {
-                CLI::error("Directory Creation Cancelled.");
-                exit(1);
-            }
-        }
+        if ($this->checkFolderExist($path) == true)
+            return true;
 
         //create a folder
         if (!mkdir($targetDir, 0755, true) == true) {
             CLI::error("Directory Location is not writable.");
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Take a File Location with file name then remove file name
+     * return a Directory Location
+     *
+     * @param string $filePath
+     * @return string
+     */
+    protected function pathFromLocation(string $filePath): string
+    {
+        return dirname($filePath);
+    }
+
+    /**
+     * @param string $path
+     * @return bool
+     */
+    public function checkFolderExist(string $path = ''): bool
+    {
+        $path = realpath($this->pathFromLocation($path));
+
+        if (!is_dir($path)) {
+            CLI::error("Directory: " . $path . " is Invalid or doesn't Exists.");
+
             return false;
         }
 
@@ -174,17 +169,9 @@ class FileHandler
      */
     public function renderTemplate(string $template, array $data): string
     {
-        $parser = Services::parser(realpath(__DIR__ . '/../Templates/') . '/');
+        $templateDir = realpath(__DIR__ . '/../Templates/') . '/';
+        $skeleton = file_get_contents($templateDir . $template . '.php');
 
-        if (is_null($parser)) {
-            CLI::error("Parser Instance Creation Failed");
-            exit(1);
-        }
-
-        $output = $parser->setData($data)->render($template);
-        // To allow for including any PHP code in the templates,
-        // replace any '@php' and '@=' tags with their correct PHP syntax.
-        $output = str_replace(['@php', '@='], ['<?php', '<?='], $output);
-        return $output;
+        return str_replace(array_keys($data), array_values($data), $skeleton);
     }
 }

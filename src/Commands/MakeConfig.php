@@ -59,10 +59,10 @@ class MakeConfig extends BaseCommand
      */
     public function run(array $params = [])
     {
-        helper('inflector');
-        $file = new FileHandler();
-
         $name = array_shift($params);
+
+        //if namespace is given
+        $ns = $params['-n'] ?? CLI::getOption('n');
 
         if (empty($name))
             $name = CLI::prompt(lang('Recharge.configName'));
@@ -72,12 +72,15 @@ class MakeConfig extends BaseCommand
             return;
         }
 
+        helper(['inflector', 'filesystem']);
+
+        $file = new FileHandler();
+
         //namespace locator
-        $ns = $params['-n'] ?? CLI::getOption('n');
         $nsinfo = $file->getNamespaceInfo($ns, 'Config');
 
         //class & file name
-        $name = ucfirst($name);
+        $name = pascalize($name);
 
         //target Dir
         if ($nsinfo['default']) {
@@ -88,18 +91,13 @@ class MakeConfig extends BaseCommand
             $ns = $nsinfo['ns'] . '\Config';
         }
 
-        $data = [
-            'namespace' => $ns,
-            'name' => $name,
-            'created_at' => date("d F, Y h:i:s A")
-        ];
+        $data = ['namespace' => $ns, 'name' => $name, 'created_at' => date("d F, Y h:i:s A")];
 
         $filepath = $targetDir . $name . '.php';
 
         //check a directory exist
         if ($file->checkFileExist($filepath) == true) {
             $template = $file->renderTemplate('config', $data);
-
 
             if (!write_file($filepath, $template)) {
                 CLI::error(lang('Recharge.writeError', [$filepath]));
@@ -109,5 +107,4 @@ class MakeConfig extends BaseCommand
             CLI::write('Created file: ' . CLI::color(basename($filepath), 'green'));
         }
     }
-
 }

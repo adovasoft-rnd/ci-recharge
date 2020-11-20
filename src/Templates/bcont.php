@@ -1,8 +1,4 @@
-<?php namespace {namespace}\Controllers;
-
-{basespace}
-
-/**
+<?php /**
  * Short description of this class usages
  *
  * @class {name}
@@ -13,17 +9,30 @@
  */
 
 
-class {name} extends {base}
+class
+{
+name
+}\Controllers;
+
+{
+    basespace}
+
+namespace {
+
+    namespace} extends {
+    base}
 {
     /**
      * {name} constructor
      */
-    public function __construct()
+    public
+    function __construct()
     {
 
     }
 
-    public function index()
+    public
+    function index()
     {
         echo 'Hello World!';
     }
