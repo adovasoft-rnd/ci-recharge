@@ -105,9 +105,7 @@ class Create extends BaseCommand
         // Class name should be Pascal case
         $name = ucfirst($name);
         $date = date("d F, Y h:i:s A");
-        $template = <<<EOD
-
-EOD;
+        $template = "";
 
         if (!write_file($path, $template)) {
             CLI::error(lang('Recharge.writeError', [$path]));

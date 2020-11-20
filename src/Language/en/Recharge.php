@@ -4,8 +4,7 @@
  */
 return [
     /* Configuration  */
-    'nameConfig' => 'Name the Configuration File',
-    'badConfigName' => 'You must provide a Configuration file name.',
+    'configName' => 'Name the Configuration File',
 
     /* Controller  */
     'nameController' => 'Name the Controller File',
@@ -35,6 +34,7 @@ return [
     'TablesNotFound' => 'Database doesn\'t have any table.',
     'TableNotExists' => 'Table named {0} doesn\'t Exist.',
 
+    'badName' => 'You must provide a file name',
     'writeError' => 'Error trying to create {0} file, check if the directory is writable.',
 
 ];

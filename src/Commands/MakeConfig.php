@@ -2,15 +2,13 @@
 
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
-use Config\Services;
-use Hafiz\Libraries\DBHandler;
+use Hafiz\Libraries\FileHandler;
 
 /**
  * Creates a new configuration file.
  * @package CodeIgniter\Commands
  * @extends BaseCommand
  */
-
 class MakeConfig extends BaseCommand
 {
     /**
@@ -61,76 +59,55 @@ class MakeConfig extends BaseCommand
      */
     public function run(array $params = [])
     {
-        $db = new DBHandler();
-
-        helper(['inflector', 'filesystem']);
+        helper('inflector');
+        $file = new FileHandler();
 
         $name = array_shift($params);
 
-        if (empty($name)) {
-            $name = CLI::prompt(lang('Recharge.nameConfig'));
-        }
+        if (empty($name))
+            $name = CLI::prompt(lang('Recharge.configName'));
 
         if (empty($name)) {
-            CLI::error(lang('Recharge.badCreateName'));
+            CLI::error(lang('Recharge.badName'));
             return;
         }
 
+        //namespace locator
         $ns = $params['-n'] ?? CLI::getOption('n');
+        $nsinfo = $file->getNamespaceInfo($ns, 'Config');
 
-        /** @var string real path $homepath */
-        $homepath = APPPATH;
-
-        if (!empty($ns)) {
-            // Get all namespaces
-            $namespaces = Services::autoloader()->getNamespace();
-
-            foreach ($namespaces as $namespace => $path) {
-                if ($namespace === $ns) {
-                    $homepath = realpath(reset($path));
-                    break;
-                }
-            }
-        } else {
-            $ns = "Config";
-        }
-
-
-        // Always use UTC/GMT so global teams can work together
-        $fileName = ucfirst($name);
-
-        // full path
-        $path = $homepath . '/Config/' . $fileName . '.php';
-
-        // Class name should be Pascal case
+        //class & file name
         $name = ucfirst($name);
-        $date = date("d F, Y h:i:s A");
-        $template = <<<EOD
-<?php namespace $ns;
 
-use CodeIgniter\Config\BaseConfig;
-
-/**
- * @class $name
- * @author CI-Recharge
- * @package $ns
- * @extend BaseConfig
- * @created $date
- */
-
-class $name extends BaseConfig
-{
-		//
-}
-
-EOD;
-
-        if (!write_file($path, $template)) {
-            CLI::error(lang('Recharge.writeError', [$path]));
-            return;
+        //target Dir
+        if ($nsinfo['default']) {
+            $targetDir = $nsinfo['path'] . '/';
+            $ns = $nsinfo['ns'];
+        } else {
+            $targetDir = $nsinfo['path'] . '/Config/';
+            $ns = $nsinfo['ns'] . '\Config';
         }
 
-        CLI::write('Created file: ' . CLI::color(str_replace($homepath, $ns, $path), 'green'));
+        $data = [
+            'namespace' => $ns,
+            'name' => $name,
+            'created_at' => date("d F, Y h:i:s A")
+        ];
+
+        $filepath = $targetDir . $name . '.php';
+
+        //check a directory exist
+        if ($file->checkFileExist($filepath) == true) {
+            $template = $file->renderTemplate('config', $data);
+
+
+            if (!write_file($filepath, $template)) {
+                CLI::error(lang('Recharge.writeError', [$filepath]));
+                return;
+            }
+
+            CLI::write('Created file: ' . CLI::color(basename($filepath), 'green'));
+        }
     }
 
 }
