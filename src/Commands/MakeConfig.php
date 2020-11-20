@@ -1,4 +1,4 @@
-<?php namespace Hafiz\Commands\Config;
+<?php namespace Hafiz\Commands;
 
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
@@ -11,7 +11,7 @@ use Hafiz\Libraries\DBHandler;
  * @extends BaseCommand
  */
 
-class Create extends BaseCommand
+class MakeConfig extends BaseCommand
 {
     /**
      * The group command is heading under all
@@ -106,6 +106,22 @@ class Create extends BaseCommand
         $name = ucfirst($name);
         $date = date("d F, Y h:i:s A");
         $template = <<<EOD
+<?php namespace $ns;
+
+use CodeIgniter\Config\BaseConfig;
+
+/**
+ * @class $name
+ * @author CI-Recharge
+ * @package $ns
+ * @extend BaseConfig
+ * @created $date
+ */
+
+class $name extends BaseConfig
+{
+		//
+}
 
 EOD;
 

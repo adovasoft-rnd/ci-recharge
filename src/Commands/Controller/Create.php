@@ -146,34 +146,6 @@ class Create extends BaseCommand
 
         //Basic Controller Template
         $basicTemplate = <<<EOD
-<?php namespace $ns\Controllers;
-
-$baseNameSpace
-
-/**
- * @class $name
- * @author CI-Recharge
- * @package $package
- * @extend $base
- * @created $date
- */
-
-
-class $name extends $base
-{
-    /**
-     * $name constructor
-     */
-    public function __construct() 
-    {
-    
-    }
-    
-    public function index()
-    {
-        echo 'Hello World!';
-    }
-}
 
 EOD;
 
