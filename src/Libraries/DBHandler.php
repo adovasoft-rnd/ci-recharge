@@ -236,16 +236,16 @@ class DBHandler
      * @param string $table
      * @return string|null
      */
-    protected function generateRowArray(string $table): ?string
+    public function generateRowArray(string $table): ?string
     {
         $result = $this->db->table($table)->get()->getResult();
-        $container = "[\n";
+        $container = "";
         foreach ($result as $row) {
-            $temp = "\n[ ";
+            $temp = "\n\t\t\t[";
             foreach ($row as $index => $value) {
-                $temp .= "'$index' => '$value', ";
+                $temp .= "'$index' => '" .addslashes($value) . "', ";
             }
-            $temp .= "],\n";
+            $temp .= "],";
             $container .= $temp;
         }
 
