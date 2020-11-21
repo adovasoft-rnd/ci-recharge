@@ -172,7 +172,7 @@ class DBHandler
 
             } else {
                 foreach ($arr as $index => $item)
-                    $str .= "'$index' => '$item', ";
+                    $str .= "'$index' => '$item',";
             }
 
             return "[ " . rtrim($str, ', ') . "]";
@@ -289,5 +289,111 @@ class DBHandler
             'dates' => str_replace(['[', ']'], '', $this->getGluedString($dates)),
             'casts' => str_replace(['[', ']'], '', $this->getGluedString($casts, true)),
         ];
+    }
+
+    /**
+     * @param string $table
+     * @return array
+     */
+    public function getModelProperties(string $table): array
+    {
+        $primary_ids = [];
+        $attributes = [];
+
+        $fields = $this->db->getFieldData($table);
+
+        foreach ($fields as $field) {
+            if ($field->primary_key === 1)
+                $primary_ids[] = $field->name;
+
+            elseif ($field->name == 'created_at' || $field->name == 'updated_at')
+                continue;
+
+            else
+                $attributes[] = $field->name;
+        }
+
+        //Model only support single column in primary key getting the first one
+
+        $primary_id = (count($primary_ids) > 0) ? array_shift($primary_ids) : '';
+        $allowed_fields = array_merge($primary_ids, $attributes);
+
+        return [
+            'primary_id' => $primary_id,
+            'attributes' => str_replace(['[', ']'], '', $this->getGluedString($allowed_fields)),
+            'rules' => $this->validationRules($fields),
+        ];
+
+    }
+
+    /**
+     * Takes the information from getFieldData() and creates the basic
+     * validation rules for those fields.
+     *
+     * @param array $fields
+     *
+     * @return mixed|string
+     */
+    public function validationRules(array $fields)
+    {
+        if (empty($fields)) return '[]';
+
+        $rules = [];
+
+        foreach ($fields as $field) {
+            if (in_array($field->name, ['created_at', 'updated_at']))
+                continue;
+
+            $rule = [];
+
+            if ($field->nullable == false) {
+                $rule[] = "required";
+            } else {
+                $rule[] = "permit_empty";
+            }
+
+            switch ($field->type) {
+                // Numeric Types
+                case 'tinyint':
+                case 'smallint':
+                case 'mediumint':
+                case 'int':
+                case 'integer':
+                case 'bigint':
+                    $rule[] = 'integer';
+                    break;
+
+                case 'decimal':
+                case 'dec':
+                case 'numeric':
+                case 'fixed':
+                    $rule[] = 'decimal';
+                    break;
+
+                case 'float':
+                case 'double':
+                    $rule[] = 'numeric';
+                    break;
+
+                case 'date':
+                    $rule[] = 'valid_date';
+                    break;
+
+                // Text Types
+                case 'char':
+                case 'varchar':
+                case 'text':
+                    $rule[] = 'string';
+                    break;
+            }
+
+            if (!empty($field->max_length)) {
+                $rule[] = "max_length[$field->max_length]";
+            }
+
+            $rules[$field->name] = implode('|', $rule);
+        }
+
+        return $this->getGluedString($rules, true);
     }
 }

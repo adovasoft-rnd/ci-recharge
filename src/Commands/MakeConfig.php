@@ -86,12 +86,13 @@ class MakeConfig extends BaseCommand
         if ($nsinfo['default']) {
             $targetDir = $nsinfo['path'] . '/';
             $ns = $nsinfo['ns'];
-        } else {
+        }
+        else {
             $targetDir = $nsinfo['path'] . '/Config/';
             $ns = $nsinfo['ns'] . '\Config';
         }
 
-        $data = ['namespace' => $ns, 'name' => $name, 'created_at' => date("d F, Y h:i:s A")];
+        $data = ['{namespace}' => $ns, '{name}' => $name, '{created_at}' => date("d F, Y h:i:s A")];
 
         $filepath = $targetDir . $name . '.php';
 

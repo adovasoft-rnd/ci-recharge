@@ -1,4 +1,6 @@
-<?php /**
+<?php
+
+/**
  * Short description of this class usages
  *
  * @class {name}
@@ -8,31 +10,17 @@
  * @created_at {created_at}
  */
 
-
-class
-{
-name
-}\Controllers;
-
-{
-    basespace}
-
-namespace {
-
-    namespace} extends {
-    base}
+class {name} extends {parent}
 {
     /**
      * {name} constructor
      */
-    public
-    function __construct()
+    public function __construct()
     {
 
     }
 
-    public
-    function index()
+    public function index()
     {
         echo 'Hello World!';
     }

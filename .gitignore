@@ -11,3 +11,8 @@ license.txt
 phpunit.xml.dist
 
 /writable/
+/app/
+/public/
+/system/
+/tests/
+/tests/

@@ -1,4 +1,5 @@
-@php namespace {namespace};
+<?php namespace {namespace};
+
 
 use CodeIgniter\Config\BaseConfig;
 
@@ -14,5 +15,5 @@ use CodeIgniter\Config\BaseConfig;
 
 class {name} extends BaseConfig
 {
-//
+    //
 }
