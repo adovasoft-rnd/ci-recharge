@@ -32,18 +32,6 @@ class DBHandler
 
     /**
      * @param string $table
-     */
-    public function generateSingleMigration(string $table): void
-    {
-        $tableInfo = $this->getTableInfos($table);
-
-        $file = new FileHandler();
-
-        $file->writeTable($table, $tableInfo[0], $tableInfo[1]);
-    }
-
-    /**
-     * @param string $table
      * @return array
      */
     public function getTableInfos(string $table): array
@@ -54,7 +42,9 @@ class DBHandler
 
         $relations = $this->generateForeignKeys($table);
 
-        return [$fields, $indexes, $relations];
+        return ['attributes' => $fields,
+            'keys' => $indexes . "\n" . $relations
+        ];
     }
 
     /**
@@ -65,7 +55,7 @@ class DBHandler
     {
         $query = $this->db->query("DESCRIBE $table")->getResult();
         $fieldString = '';
-        $singleField = '';
+
         foreach ($query as $field) {
             $singleField = "\n\t\t'$field->Field' => [";
             //Type
@@ -74,23 +64,27 @@ class DBHandler
 
             //Constraint
             if (preg_match('/\((.+)\)/', $field->Type, $matches) > 0) {
-                if (is_numeric($matches[1]) || preg_match('/[\d]+\s?,[\d]+\s?/', $matches[1]) > 0)
+                //integer , varchar
+                if (is_numeric($matches[1]))
+                    $singleField .= "\n\t\t\t'constraint' => " . $matches[1] . ",";
+
+                //float , double
+                elseif (preg_match('/[\d]+\s?,[\d]+\s?/', $matches[1]) > 0)
                     $singleField .= "\n\t\t\t'constraint' => '" . $matches[1] . "',";
+
+                //Enum Fields
                 else {
-                    //Enum Fields
-                    $values = explode(',', $matches[1]);
-                    if (count($values) == 1) {
-                        $singleField .= "\n\t\t\t'constraint' => ['" . $values[0] . "'],";
-                    } else {
-                        $enums = array_map(function ($val) {
-                            return "'" . $val . "'";
-                        }, $values);
-                        $values = implode(',', $enums);
-                        $singleField .= "\n\t\t\t'constraint' => [" . $values . "],";
-                    }
+                    $values = explode(',', str_replace("'", "", $matches[1]));
+
+                    if (count($values) == 1)
+                        $singleField .= "\n\t\t\t'constraint' => [" . $this->getGluedString($values) . "],";
+
+                    else
+                        $singleField .= "\n\t\t\t'constraint' => " . $this->getGluedString($values) . ",";
                 }
             }
 
+            //if field need null
             $singleField .= "\n\t\t\t'null' => " . (($field->Null == 'YES') ? 'true,' : 'false,');
 
             if (strpos($field->Default, 'current_timestamp()') === FALSE)
@@ -107,7 +101,6 @@ class DBHandler
             //autoincrement
             if (strpos($field->Extra, 'auto_increment') !== false)
                 $singleField .= "\n\t\t\t'unique' => true,";
-
 
             $singleField .= "\n\t\t],";
             $fieldString .= $singleField;
@@ -160,11 +153,13 @@ class DBHandler
      */
     protected function getGluedString(array $arr, bool $is_assoc = false): string
     {
+
         //array consist of one element
         if (count($arr) == 1)
             return "'" . strval(array_shift($arr)) . "'";
 
         else {
+
             $str = '';
             if (!$is_assoc) {
                 foreach ($arr as $item)
@@ -188,7 +183,7 @@ class DBHandler
         $keys = $this->db->getForeignKeyData($table);
         $keyArray = [];
         foreach ($keys as $key)
-            array_push($keyArray, "\n\t\t\$this->forge->addForeignKey('$key->column_name','$key->foreign_table_name','$key->foreign_column_name','CASCADE','CASCADE');");
+            array_push($keyArray, "\$this->forge->addForeignKey('$key->column_name','$key->foreign_table_name','$key->foreign_column_name','CASCADE','CASCADE');\n\t\t");
 
         return implode('', array_unique($keyArray));
     }

@@ -6,6 +6,7 @@ return [
     /* Configuration  */
     'configName' => 'Name the Configuration File',
 
+
     /* Controller  */
     'nameController' => 'Name the Controller File',
     'badControllerName' => 'You must provide a Controller file name.',
@@ -16,11 +17,11 @@ return [
     /* Entity */
     'nameEntity' => 'Name the Entity File',
 
-    /* Entity */
-    'nameMigration' => 'Name the Migration File',
+    /* Migration */
+    'migrationName' => 'Name the Migration File',
 
     /* Filter */
-    'nameFilter' => 'Name the Filter File',
+    'filterName' => 'Name the Filter File',
 
     /* Model */
     'modelName' => 'Name the Model File',
