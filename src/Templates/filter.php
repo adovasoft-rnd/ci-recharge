@@ -1,21 +1,25 @@
-<?php namespace {namespace}\Filters;
+<?php /**
+ * Short description of this class usages
+ *
+ * @class {name}
+ * @generated_by CI-Recharge
+ * @package {namespace}
+ * @implements FilterInterface
+ * @created_at {created_at}
+ */
 
-use CodeIgniter\HTTP\RequestInterface;
-use CodeIgniter\HTTP\ResponseInterface;
-use CodeIgniter\Filters\FilterInterface;
-use CodeIgniter\Services;
+class
+{
+name
+}
 
-/**
-* Short description of this class usages
-*
-* @class {name}
-* @generated_by CI-Recharge
-* @package {namespace}
-* @implements FilterInterface
-* @created_at {created_at}
-*/
+Filters;
 
-class {name} implements FilterInterface
+use CodeIgniter\HTTP\RequestInterface;use CodeIgniter\HTTP\ResponseInterface;use CodeIgniter\Services;
+
+namespace {
+
+    namespace} implements FilterInterface
 {
     /**
      * Do whatever processing this filter needs to do.
@@ -32,14 +36,15 @@ class {name} implements FilterInterface
      * @param null $arguments
      * @return mixed
      */
-    public function before(RequestInterface $request, $arguments = null)
+    public
+    function before(RequestInterface $request, $arguments = null)
     {
         //Validator Instants
         $validator = Services::validation();
-        
+
         //Session Instants
         $session = Services::session();
-        
+
     }
 
     //--------------------------------------------------------------------
@@ -56,7 +61,8 @@ class {name} implements FilterInterface
      *
      * @return mixed
      */
-    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
+    public
+    function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
         //
     }

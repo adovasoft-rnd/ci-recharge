@@ -84,7 +84,7 @@ class MakeSeeder extends BaseCommand
         $nsinfo = $file->getNamespaceInfo($ns, 'App');
 
         //class & file name
-        $name = singular(pascalize($name)) . ((stripos('seeder', $name) == false) ? 'Seeder' : '');;
+        $name = singular(pascalize($name)) . ((stripos('seeder', $name) == false) ? 'Seeder' : '');
         $ns = $nsinfo['ns'];
         $targetDir = $nsinfo['path'] . '/Database/Seeds/';
         $filepath = $targetDir . $name . '.php';

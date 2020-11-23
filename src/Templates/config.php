@@ -1,19 +1,22 @@
-<?php namespace {namespace};
+<?php /**
+ * Short description of this class usages
+ *
+ * @class {name}
+ * @generated_by CI-Recharge
+ * @package {namespace}
+ * @extend BaseConfig
+ * @created_at {created_at}
+ */
+
+class
+{
+name
+}
 
 
-use CodeIgniter\Config\BaseConfig;
+namespace {
 
-/**
-* Short description of this class usages
-*
-* @class {name}
-* @generated_by CI-Recharge
-* @package {namespace}
-* @extend BaseConfig
-* @created_at {created_at}
-*/
-
-class {name} extends BaseConfig
+    namespace} extends BaseConfig
 {
     //
 }
