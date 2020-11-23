@@ -214,7 +214,7 @@ class DBHandler
         $keys = $this->db->getForeignKeyData($table);
         $keyArray = [];
         foreach ($keys as $key)
-            array_push($keyArray, "\$this->forge->addForeignKey('$key->column_name','$key->foreign_table_name','$key->foreign_column_name','CASCADE','CASCADE');\n\t\t");
+            array_push($keyArray, "\n\t\t\$this->forge->addForeignKey('$key->column_name','$key->foreign_table_name','$key->foreign_column_name','CASCADE','CASCADE');");
 
         return implode('', array_unique($keyArray));
     }

@@ -1,6 +1,6 @@
-<?php
+<?php namespace {namespace}\Database\Migrations;
 
-use const Database\Migrations;
+use CodeIgniter\Database\Migration;
 
 /**
  * Short description of this class usages
@@ -12,34 +12,20 @@ use const Database\Migrations;
  * @created_at {created_at}
  */
 
-class
+class {name} extends Migration
 {
-name
-}
-
-Migrations;
-
-namespace {
-
-    namespace} extends Migration
-{
-    public
-    function up()
+    public function up()
     {
         $this->forge->addField([
 	    {attributes}
-	    ])
-
-        {
-            keys}
-
+	    ]);
+        {keys}
         $this->forge->createTable('{table}');
 	}
 
     //--------------------------------------------------------------------
 
-    public
-    function down()
+    public function down()
     {
         $this->forge->dropTable('{table}');
     }
