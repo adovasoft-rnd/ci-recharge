@@ -13,6 +13,10 @@ use Hafiz\Libraries\FileHandler;
 class MakeMigration extends BaseCommand
 {
 
+    protected $db = null;
+
+    protected $file = null;
+
     /**
      * The group command is heading under all
      * commands will be listed
@@ -53,7 +57,7 @@ class MakeMigration extends BaseCommand
     protected $options = [
         '-n' => 'Set migrate namespace',
         '-t' => 'Set migrate Database table',
-
+        '-all' => 'Set migration for Complete database'
     ];
 
     /**
@@ -63,46 +67,67 @@ class MakeMigration extends BaseCommand
      */
     public function run(array $params = [])
     {
+        helper(['inflector', 'filesystem']);
+
+        $this->file = new FileHandler();
+        $this->db = new DBHandler();
+
         $name = array_shift($params);
         $ns = $params['-n'] ?? CLI::getOption('n');
         $table = $params['-t'] ?? CLI::getOption('t');
-        $database = $params['-all'] ?? CLI::getOption('all');
+        $alltables = $params['-all'] ?? CLI::getOption('all');
 
-        var_dump($database);
-        die();
-
-        if (empty($name) && is_null($database)) {
+        if (empty($name) && is_null($alltables))
             $name = CLI::prompt(lang('Recharge.migrateName'));
-        }
 
-        if (empty($name) && is_null($database)) {
+        if (empty($name) && is_null($alltables)) {
             CLI::error(lang('Recharge.badName'));
             return;
         }
 
-        helper(['inflector', 'filesystem']);
-
-        $file = new FileHandler();
-
         //namespace locator
-        $nsinfo = $file->getNamespaceInfo($ns, 'App');
-
+        $nsinfo = $this->file->getNamespaceInfo($ns, 'App');
         //class & file name
-
-        if ()
-            $migrateName = pascalize($name);
         $ns = $nsinfo['ns'];
         $targetDir = $nsinfo['path'] . '/Database/Migrations/';
         $config = config('Migrations');
-        $fileName = gmdate($config->timestampFormat) . underscore($name);
-        $filepath = $targetDir . $fileName . '.php';
+        $timestamp = gmdate($config->timestampFormat);
 
-        if ($file->verifyDirectory($filepath)) {
+        //if all database migration creation selected
+
+        if (is_bool($alltables) && $alltables === true) {
+            $tableNames = $this->db->getTableNames();
+
+            foreach ($tableNames as $tableName)
+                $this->generateMigration($timestamp, $ns, $targetDir, NULL, $tableName);
+        } else
+            $this->generateMigration($timestamp, $ns, $targetDir, $name, $table);
+    }
+
+    /**
+     * @param string $timestamp
+     * @param string $ns
+     * @param string $targetDir
+     * @param string|null $name
+     * @param null $table
+     */
+    public function generateMigration(string $timestamp, string $ns, string $targetDir, string $name = NULL, $table = NULL): void
+    {
+        if (empty($name)) {
+            $fileName = $timestamp . 'create_' . underscore($table) . '_table.php';
+            $migrateName = pascalize($table);
+        } else {
+            $fileName = $timestamp . underscore($name) . '.php';
+            $migrateName = pascalize($name);
+        }
+
+        $filepath = $targetDir . $fileName;
+
+        if ($this->file->verifyDirectory($filepath)) {
             //do we have to add table info
             if (!empty($table)) {
-                $db = new DBHandler();
-                if ($db->checkTableExist($table)) {
-                    $properties = $db->getTableInfos($table);
+                if ($this->db->checkTableExist($table)) {
+                    $properties = $this->db->getTableInfos($table);
                     extract($properties);
                 }
             }
@@ -117,15 +142,12 @@ class MakeMigration extends BaseCommand
             ];
 
             //check a directory exist
-            if ($file->checkFileExist($filepath) == true) {
-                $template = $file->renderTemplate('migrate', $data);
-
-
+            if ($this->file->checkFileExist($filepath) == true) {
+                $template = $this->file->renderTemplate('migrate', $data);
                 if (!write_file($filepath, $template)) {
                     CLI::error(lang('Recharge.writeError', [$filepath]));
                     return;
                 }
-
                 CLI::write('Created file: ' . CLI::color(basename($filepath), 'green'));
             }
         }

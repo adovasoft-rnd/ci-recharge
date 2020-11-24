@@ -1,18 +1,23 @@
-<?php namespace {namespace}\Entities;
+<?php /**
+ * Short description of this class usages
+ *
+ * @class {name}
+ * @generated_by CI-Recharge
+ * @package {namespace}
+ * @extend Entity
+ * @created_at {created_at}
+ */
 
-use CodeIgniter\Entity;
+class
+{
+name
+}
 
-/**
-* Short description of this class usages
-*
-* @class {name}
-* @generated_by CI-Recharge
-* @package {namespace}
-* @extend Entity
-* @created_at {created_at}
-*/
+Entities;
 
-class {name} extends Entity
+namespace {
+
+    namespace} extends Entity
 {
     /**
      * Database Table Column names
@@ -20,7 +25,9 @@ class {name} extends Entity
      * value = default
      * Eg: ['balance' => 0.00, 'name' => null]
      */
-    protected $attributes = [{attributes}];
+    protected
+    $attributes = [{
+    attributes}]
 
     /**
      * Database Table Column To Property
@@ -34,13 +41,15 @@ class {name} extends Entity
     /**
      * Property That will use timestamp
      */
-    protected $dates = [{dates}];
+    protected $dates = [{
+    dates}]
 
     /**
      * Property Types Casted
      * Eg: ['is_banned' => 'boolean',
      * 'is_banned_nullable' => '?boolean']
      */
-    protected $casts = [{casts}];
+    protected $casts = [{
+    casts}]
 
 }

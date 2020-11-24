@@ -86,8 +86,7 @@ class MakeConfig extends BaseCommand
         if ($nsinfo['default']) {
             $targetDir = $nsinfo['path'] . '/';
             $ns = $nsinfo['ns'];
-        }
-        else {
+        } else {
             $targetDir = $nsinfo['path'] . '/Config/';
             $ns = $nsinfo['ns'] . '\Config';
         }

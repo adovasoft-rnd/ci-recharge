@@ -1,8 +1,6 @@
-<?php namespace {namespace}\Database\Seeds;
+<?php
 
-use CodeIgniter\Database\Seeder;
-use Exception;
-use ReflectionException;
+use const Database\Seeds;
 
 /**
  * Short description of this class usages
@@ -14,13 +12,24 @@ use ReflectionException;
  * @created_at {created_at}
  */
 
-class {name} extends Seeder
+class
 {
-    public function run()
+name
+}
+
+Seeds;
+
+namespace {
+
+    namespace} extends Seeder
+{
+    public
+    function run()
     {
         $data = [
-            {seeder}
-        ];
+            {
+                seeder}
+        ]
 
         // Using Model
         /*$model = new $nameModel();

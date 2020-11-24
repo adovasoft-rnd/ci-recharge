@@ -1,43 +1,55 @@
-<?php namespace {namespace}\Models;
+<?php /**
+ * Short description of this class usages
+ *
+ * @class {name}
+ * @generated_by CI-Recharge
+ * @package {namespace}
+ * @extend Model
+ * @created_at {created_at}
+ */
 
-use CodeIgniter\Model;
+class
+{
+name
+}
 
-/**
-* Short description of this class usages
-*
-* @class {name}
-* @generated_by CI-Recharge
-* @package {namespace}
-* @extend Model
-* @created_at {created_at}
-*/
+Models;
 
-class {name} extends Model
+namespace {
+
+    namespace} extends Model
 {
     /**
      * Table Configuration
      */
-    protected $table      = '{table}';
-    protected $primaryKey = '{primary_id}';
+    protected
+    $table = '{table}';
+    protected
+    $primaryKey = '{primary_id}';
 
     /**
      * Model & Table Column Customization
      */
-    protected $allowedFields = [{attributes}];
+    protected
+    $allowedFields = [{
+    attributes}]
     protected $useTimestamps = true;
     protected $dateFormat = 'datetime';
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
-    {delete_field}
+    protected $createdField = 'created_at';
+    protected $updatedField = 'updated_at';
+    {
+        delete_field}
 
     /**
      * Return Configuration
      */
-    protected $returnType     = 'object';
-    protected $useSoftDeletes = {soft_delete};
-    protected $validationRules    = {rules};
+    protected $returnType = 'object';
+    protected $useSoftDeletes = {
+    soft_delete}
+    protected $validationRules = {
+    rules}
     protected $validationMessages = [];
-    protected $skipValidation     = true;
+    protected $skipValidation = true;
 
     /**
      * Events Configurations

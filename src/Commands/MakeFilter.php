@@ -2,7 +2,6 @@
 
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
-use Config\Services;
 use Hafiz\Libraries\FileHandler;
 
 /**

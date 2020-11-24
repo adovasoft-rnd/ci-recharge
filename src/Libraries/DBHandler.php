@@ -3,6 +3,7 @@
 use CodeIgniter\CLI\CLI;
 use CodeIgniter\Database\BaseConnection;
 use Config\Database;
+use Throwable;
 
 /**
  * Class DBHandler
@@ -24,10 +25,40 @@ class DBHandler
         try {
             $this->db = Database::connect($group);
             $this->db->initialize();
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             CLI::error($exception->getMessage());
             exit(1);
         }
+    }
+
+    /**
+     *
+     */
+    public function generateDBMigration(): void
+    {
+        $tables = $this->getTableNames();
+        foreach ($tables as $table) {
+            $tableInfo = $this->getTableInfos($table);
+
+            $file = new FileHandler();
+
+            $file->writeTable($table, $tableInfo[0], $tableInfo[1]);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getTableNames(): ?array
+    {
+        $tables = $this->db->listTables();
+
+        if (empty($tables)) {
+            CLI::error(lang('Recharge.TablesNotFound'));
+            exit(1);
+        }
+
+        return $tables;
     }
 
     /**
@@ -110,6 +141,34 @@ class DBHandler
     }
 
     /**
+     * @param array $arr
+     * @param bool $is_assoc
+     * @return string
+     */
+    protected function getGluedString(array $arr, bool $is_assoc = false): string
+    {
+
+        //array consist of one element
+        if (count($arr) == 1)
+            return "'" . strval(array_shift($arr)) . "'";
+
+        else {
+
+            $str = '';
+            if (!$is_assoc) {
+                foreach ($arr as $item)
+                    $str .= "'$item', ";
+
+            } else {
+                foreach ($arr as $index => $item)
+                    $str .= "'$index' => '$item',";
+            }
+
+            return "[ " . rtrim($str, ', ') . "]";
+        }
+    }
+
+    /**
      * @param string $table
      * @return string|null
      */
@@ -147,34 +206,6 @@ class DBHandler
     }
 
     /**
-     * @param array $arr
-     * @param bool $is_assoc
-     * @return string
-     */
-    protected function getGluedString(array $arr, bool $is_assoc = false): string
-    {
-
-        //array consist of one element
-        if (count($arr) == 1)
-            return "'" . strval(array_shift($arr)) . "'";
-
-        else {
-
-            $str = '';
-            if (!$is_assoc) {
-                foreach ($arr as $item)
-                    $str .= "'$item', ";
-
-            } else {
-                foreach ($arr as $index => $item)
-                    $str .= "'$index' => '$item',";
-            }
-
-            return "[ " . rtrim($str, ', ') . "]";
-        }
-    }
-
-    /**
      * @param string $table
      * @return string|null
      */
@@ -183,39 +214,9 @@ class DBHandler
         $keys = $this->db->getForeignKeyData($table);
         $keyArray = [];
         foreach ($keys as $key)
-            array_push($keyArray, "\$this->forge->addForeignKey('$key->column_name','$key->foreign_table_name','$key->foreign_column_name','CASCADE','CASCADE');\n\t\t");
+            array_push($keyArray, "\n\t\t\$this->forge->addForeignKey('$key->column_name','$key->foreign_table_name','$key->foreign_column_name','CASCADE','CASCADE');");
 
         return implode('', array_unique($keyArray));
-    }
-
-    /**
-     *
-     */
-    public function generateDBMigration(): void
-    {
-        $tables = $this->getTableNames();
-        foreach ($tables as $table) {
-            $tableInfo = $this->getTableInfos($table);
-
-            $file = new FileHandler();
-
-            $file->writeTable($table, $tableInfo[0], $tableInfo[1]);
-        }
-    }
-
-    /**
-     * @return array
-     */
-    public function getTableNames(): ?array
-    {
-        $tables = $this->db->listTables();
-
-        if (empty($tables)) {
-            CLI::error(lang('Recharge.TablesNotFound'));
-            exit(1);
-        }
-
-        return $tables;
     }
 
     /**
@@ -243,7 +244,7 @@ class DBHandler
         foreach ($result as $row) {
             $temp = "\n\t\t\t[";
             foreach ($row as $index => $value) {
-                $temp .= "'$index' => '" .addslashes($value) . "', ";
+                $temp .= "'$index' => '" . addslashes($value) . "', ";
             }
             $temp .= "],";
             $container .= $temp;
