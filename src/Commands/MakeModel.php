@@ -10,7 +10,7 @@ use Hafiz\Libraries\FileHandler;
  * @package CodeIgniter\Commands
  * @extend BaseCommand
  */
-class MakeMigration extends BaseCommand
+class MakeModel extends BaseCommand
 {
 
     /**
@@ -24,7 +24,7 @@ class MakeMigration extends BaseCommand
      * The Command's name
      * @var string
      */
-    protected $name = 'make:migrate';
+    protected $name = 'make:model';
 
     /**
      * The Command's short description
@@ -36,14 +36,14 @@ class MakeMigration extends BaseCommand
      * The Command's usage
      * @var string
      */
-    protected $usage = 'make:migrate [migrate_name] [Options]';
+    protected $usage = 'make:model [model_name] [Options]';
 
     /**
      * The Command's Arguments
      * @var array
      */
     protected $arguments = [
-        'migrate_name' => 'The database model file name',
+        'model_name' => 'The database model file name',
     ];
 
     /**
@@ -51,8 +51,8 @@ class MakeMigration extends BaseCommand
      * @var array
      */
     protected $options = [
-        '-n' => 'Set migrate namespace',
-        '-t' => 'Set migrate Database table',
+        '-n' => 'Set model namespace',
+        '-t' => 'Set model Database table',
 
     ];
 
@@ -66,16 +66,12 @@ class MakeMigration extends BaseCommand
         $name = array_shift($params);
         $ns = $params['-n'] ?? CLI::getOption('n');
         $table = $params['-t'] ?? CLI::getOption('t');
-        $database = $params['-all'] ?? CLI::getOption('all');
 
-        var_dump($database);
-        die();
-
-        if (empty($name) && is_null($database)) {
-            $name = CLI::prompt(lang('Recharge.migrateName'));
+        if (empty($name)) {
+            $name = CLI::prompt(lang('Recharge.modelName'));
         }
 
-        if (empty($name) && is_null($database)) {
+        if (empty($name)) {
             CLI::error(lang('Recharge.badName'));
             return;
         }
@@ -88,37 +84,51 @@ class MakeMigration extends BaseCommand
         $nsinfo = $file->getNamespaceInfo($ns, 'App');
 
         //class & file name
-
-        if ()
-            $migrateName = pascalize($name);
+        $name = singular(pascalize($name)) . (stripos($name, 'Model') === FALSE ? 'Model' : '');
         $ns = $nsinfo['ns'];
-        $targetDir = $nsinfo['path'] . '/Database/Migrations/';
-        $config = config('Migrations');
-        $fileName = gmdate($config->timestampFormat) . underscore($name);
-        $filepath = $targetDir . $fileName . '.php';
+        $targetDir = $nsinfo['path'] . '/Models/';
+        $filepath = $targetDir . $name . '.php';
 
         if ($file->verifyDirectory($filepath)) {
             //do we have to add table info
             if (!empty($table)) {
                 $db = new DBHandler();
                 if ($db->checkTableExist($table)) {
-                    $properties = $db->getTableInfos($table);
+                    $properties = $db->getModelProperties($table);
                     extract($properties);
                 }
             }
 
+            //for soft deleted option
+            $softDelete = 'false';
+            $deleteField = '';
+            $validationRules = '[]';
+
+            if (isset($attributes)) {
+                if (strpos($attributes, 'deleted_at') !== false) {
+                    $softDelete = 'true';
+                    $deleteField = "protected \$deletedField  = 'deleted_at';";
+                }
+            }
+            if (isset($rules)) {
+                $validationRules = $rules;
+            }
+
             $data = [
                 '{namespace}' => $ns,
-                '{name}' => $migrateName,
+                '{name}' => $name,
                 '{created_at}' => date("d F, Y h:i:s A"),
                 '{attributes}' => $attributes ?? NULL,
                 '{table}' => $table ?? NULL,
-                '{keys}' => $keys ?? NULL,
+                '{primary_id}' => $primary_id ?? NULL,
+                '{delete_field}' => $deleteField,
+                '{soft_delete}' => $softDelete,
+                '{rules}' => $validationRules,
             ];
 
             //check a directory exist
             if ($file->checkFileExist($filepath) == true) {
-                $template = $file->renderTemplate('migrate', $data);
+                $template = $file->renderTemplate('model', $data);
 
 
                 if (!write_file($filepath, $template)) {
