@@ -80,7 +80,7 @@ class MakeFilter extends BaseCommand
         //namespace locator
         $nsinfo = $file->getNamespaceInfo($ns, 'App');
         //class & file name
-        $name = pascalize($name) . ((stripos('filter', $name) == false) ? 'Filter' : '');
+        $name = pascalize($name) . ((stripos( $name,'filter') == false) ? 'Filter' : '');
         $ns = $nsinfo['ns'];
         $targetDir = $nsinfo['path'] . '/Filters/';
         $filepath = $targetDir . $name . '.php';
