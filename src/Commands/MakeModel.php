@@ -105,7 +105,7 @@ class MakeModel extends BaseCommand
             $validationRules = '[]';
 
             if (isset($attributes)) {
-                if (strpos($attributes, 'deleted_at') !== false) {
+                if (stripos($attributes, 'deleted_at') !== false) {
                     $softDelete = 'true';
                     $deleteField = "protected \$deletedField  = 'deleted_at';";
                 }

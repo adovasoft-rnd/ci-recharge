@@ -145,9 +145,7 @@ class Create extends BaseCommand
         $date = date("d F, Y h:i:s A");
 
         //Basic Controller Template
-        $basicTemplate = <<<EOD
-
-EOD;
+        $basicTemplate = '';
 
         //REST Controller Template
         $restTemplate = <<<EOD
