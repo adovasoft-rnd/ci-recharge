@@ -117,7 +117,7 @@ class MakeMigration extends BaseCommand
     {
         if (empty($name)) {
             $fileName = $timestamp . 'create_' . underscore($table) . '_table.php';
-            $migrateName = pascalize($table);
+            $migrateName = pascalize('create_' . underscore($table) . '_table');
         } else {
             $fileName = $timestamp . underscore($name) . '.php';
             $migrateName = pascalize($name);
