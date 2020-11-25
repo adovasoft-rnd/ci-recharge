@@ -6,7 +6,10 @@ use Hafiz\Libraries\DBHandler;
 use Hafiz\Libraries\FileHandler;
 
 /**
- * Creates a new Entity file.
+ * Make Command Class for creating a migration Instance skeleton class
+ * Model can be created as skeleton or
+ * user can point a Table to get property for model
+ *
  * @package CodeIgniter\Commands
  * @extend BaseCommand
  */
@@ -34,7 +37,7 @@ class MakeMigration extends BaseCommand
      * The Command's short description
      * @var string
      */
-    protected $description = 'Creates a Model file [NB: FOLDER NAMED `Entities` IS NECESSARY].';
+    protected $description = 'Creates a Migration file.';
 
     /**
      * The Command's usage
@@ -47,7 +50,7 @@ class MakeMigration extends BaseCommand
      * @var array
      */
     protected $arguments = [
-        'migrate_name' => 'The database model file name',
+        'migrate_name' => 'The Migration file name',
     ];
 
     /**
@@ -68,7 +71,6 @@ class MakeMigration extends BaseCommand
     public function run(array $params = [])
     {
         helper(['inflector', 'filesystem']);
-
         $this->file = new FileHandler();
         $this->db = new DBHandler();
 

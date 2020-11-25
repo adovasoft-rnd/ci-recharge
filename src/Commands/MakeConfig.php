@@ -5,9 +5,11 @@ use CodeIgniter\CLI\CLI;
 use Hafiz\Libraries\FileHandler;
 
 /**
- * Creates a new configuration file.
- * @package CodeIgniter\Commands
- * @extends BaseCommand
+ * Make Command class for create a empty skeleton
+ * Configuration File on specific namespace location
+ *
+ * Class MakeConfig
+ * @package Hafiz\Commands
  */
 class MakeConfig extends BaseCommand
 {
@@ -28,7 +30,7 @@ class MakeConfig extends BaseCommand
      * The Command's short description
      * @var string
      */
-    protected $description = 'Creates a configuration file.';
+    protected $description = 'Creates a Configuration file.';
 
     /**
      * The Command's usage
@@ -41,7 +43,7 @@ class MakeConfig extends BaseCommand
      * @var array
      */
     protected $arguments = [
-        'config_name' => 'The Configuration file name',
+        'config_name' => 'The configuration file name',
     ];
 
     /**
@@ -59,22 +61,27 @@ class MakeConfig extends BaseCommand
      */
     public function run(array $params = [])
     {
+        /**
+         * Calling all Library and helpers
+         */
+        helper(['inflector', 'filesystem']);
+        $file = new FileHandler();
+
+        /**
+         * Input Configuration name from input
+         */
         $name = array_shift($params);
 
         //if namespace is given
         $ns = $params['-n'] ?? CLI::getOption('n');
 
         if (empty($name))
-            $name = CLI::prompt(lang('Recharge.configName'));
+            $name = CLI::prompt(lang('Recharge.configName'), null, 'required|string');
 
         if (empty($name)) {
             CLI::error(lang('Recharge.badName'));
             return;
         }
-
-        helper(['inflector', 'filesystem']);
-
-        $file = new FileHandler();
 
         //namespace locator
         $nsinfo = $file->getNamespaceInfo($ns, 'Config');
