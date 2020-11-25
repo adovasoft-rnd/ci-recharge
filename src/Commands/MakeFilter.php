@@ -105,7 +105,7 @@ class MakeFilter extends BaseCommand
                     return;
                 }
 
-                CLI::write('Created file: ' . CLI::color(basename($filepath), 'green'));
+                CLI::write('Created file: ' . CLI::color($filepath, 'green'));
             }
         }
     }

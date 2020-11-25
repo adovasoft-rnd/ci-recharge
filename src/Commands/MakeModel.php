@@ -6,7 +6,9 @@ use Hafiz\Libraries\DBHandler;
 use Hafiz\Libraries\FileHandler;
 
 /**
- * Creates a new Entity file.
+ * Make Command Class for a skeleton Model Class
+ * model Class that collect property from table
+ *
  * @package CodeIgniter\Commands
  * @extend BaseCommand
  */
@@ -30,7 +32,7 @@ class MakeModel extends BaseCommand
      * The Command's short description
      * @var string
      */
-    protected $description = 'Creates a Model file [NB: FOLDER NAMED `Entities` IS NECESSARY].';
+    protected $description = 'Creates a Model file.';
 
     /**
      * The Command's usage
@@ -43,7 +45,7 @@ class MakeModel extends BaseCommand
      * @var array
      */
     protected $arguments = [
-        'model_name' => 'The database model file name',
+        'model_name' => 'The Model file name',
     ];
 
     /**
@@ -52,8 +54,7 @@ class MakeModel extends BaseCommand
      */
     protected $options = [
         '-n' => 'Set model namespace',
-        '-t' => 'Set model Database table',
-
+        '-t' => 'Set Model Database table',
     ];
 
     /**
@@ -63,12 +64,15 @@ class MakeModel extends BaseCommand
      */
     public function run(array $params = [])
     {
+        helper(['inflector', 'filesystem']);
+        $file = new FileHandler();
+
         $name = array_shift($params);
         $ns = $params['-n'] ?? CLI::getOption('n');
         $table = $params['-t'] ?? CLI::getOption('t');
 
         if (empty($name)) {
-            $name = CLI::prompt(lang('Recharge.modelName'));
+            $name = CLI::prompt(lang('Recharge.modelName'), null, 'required|string');
         }
 
         if (empty($name)) {
@@ -76,17 +80,13 @@ class MakeModel extends BaseCommand
             return;
         }
 
-        helper(['inflector', 'filesystem']);
-
-        $file = new FileHandler();
-
         //namespace locator
         $nsinfo = $file->getNamespaceInfo($ns, 'App');
 
         //class & file name
-        $name = singular(pascalize($name)) . (stripos($name, 'Model') === FALSE ? 'Model' : '');
         $ns = $nsinfo['ns'];
         $targetDir = $nsinfo['path'] . '/Models/';
+        $name = singular(pascalize($name)) . (stripos($name, 'Model') === FALSE ? 'Model' : '');
         $filepath = $targetDir . $name . '.php';
 
         if ($file->verifyDirectory($filepath)) {
@@ -136,7 +136,7 @@ class MakeModel extends BaseCommand
                     return;
                 }
 
-                CLI::write('Created file: ' . CLI::color(basename($filepath), 'green'));
+                CLI::write('Created file: ' . CLI::color($filepath, 'green'));
             }
         }
     }

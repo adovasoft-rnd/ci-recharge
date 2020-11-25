@@ -6,7 +6,9 @@ use Hafiz\Libraries\DBHandler;
 use Hafiz\Libraries\FileHandler;
 
 /**
- * Creates a new Entity file.
+ * Make Commadn for Seeder File Generation Class
+ * Seeder can be skeleton aor loaded from a database table
+ *
  * @package CodeIgniter\Commands
  * @extend BaseCommand
  */
@@ -30,7 +32,7 @@ class MakeSeeder extends BaseCommand
      * The Command's short description
      * @var string
      */
-    protected $description = 'Creates a seeder file [NB: FOLDER NAMED `Entities` IS NECESSARY].';
+    protected $description = 'Creates a Seeder file.';
 
     /**
      * The Command's usage
@@ -43,7 +45,7 @@ class MakeSeeder extends BaseCommand
      * @var array
      */
     protected $arguments = [
-        'seed_name' => 'The database entity file name',
+        'seed_name' => 'The Seeder file name',
     ];
 
     /**
@@ -63,6 +65,9 @@ class MakeSeeder extends BaseCommand
      */
     public function run(array $params = [])
     {
+        helper(['inflector', 'filesystem']);
+        $file = new FileHandler();
+
         $name = array_shift($params);
         $ns = $params['-n'] ?? CLI::getOption('n');
         $table = $params['-t'] ?? CLI::getOption('t');
@@ -75,10 +80,6 @@ class MakeSeeder extends BaseCommand
             CLI::error(lang('Recharge.badName'));
             return;
         }
-
-        helper(['inflector', 'filesystem']);
-
-        $file = new FileHandler();
 
         //namespace locator
         $nsinfo = $file->getNamespaceInfo($ns, 'App');
@@ -110,7 +111,7 @@ class MakeSeeder extends BaseCommand
                     return;
                 }
 
-                CLI::write('Created file: ' . CLI::color(basename($filepath), 'green'));
+                CLI::write('Created file: ' . CLI::color($filepath, 'green'));
             }
         }
     }

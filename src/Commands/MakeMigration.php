@@ -64,7 +64,7 @@ class MakeMigration extends BaseCommand
     ];
 
     /**
-     * Creates a new entity file with the current timestamp.
+     * Creates a new migration file with the current timestamp.
      * @param array $params
      * @return void
      */
@@ -80,7 +80,7 @@ class MakeMigration extends BaseCommand
         $alltables = $params['-all'] ?? CLI::getOption('all');
 
         if (empty($name) && is_null($alltables))
-            $name = CLI::prompt(lang('Recharge.migrateName'));
+            $name = CLI::prompt(lang('Recharge.migrateName'), null, 'string');
 
         if (empty($name) && is_null($alltables)) {
             CLI::error(lang('Recharge.badName'));
@@ -150,7 +150,7 @@ class MakeMigration extends BaseCommand
                     CLI::error(lang('Recharge.writeError', [$filepath]));
                     return;
                 }
-                CLI::write('Created file: ' . CLI::color(basename($filepath), 'green'));
+                CLI::write('Created file: ' . CLI::color($filepath, 'green'));
             }
         }
     }
