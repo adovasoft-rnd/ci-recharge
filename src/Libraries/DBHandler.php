@@ -118,16 +118,16 @@ class DBHandler
             //if field need null
             $singleField .= "\n\t\t\t'null' => " . (($field->Null == 'YES') ? 'true,' : 'false,');
 
-            if (strpos($field->Default, 'current_timestamp()') === FALSE)
+            if(!is_null($field->Default) && (strpos($field->Default, 'current_timestamp()') === FALSE))
                 $singleField .= "\n\t\t\t'default' => '$field->Default',";
 
             //unsigned
             if (strpos($field->Type, 'unsigned') !== false)
                 $singleField .= "\n\t\t\t'unsigned' => true,";
 
-            //Unique Key
+/*            //Unique Key
             if ($field->Key == 'UNI')
-                $singleField .= "\n\t\t\t'unique' => true,";
+                $singleField .= "\n\t\t\t'unique' => true,";*/
 
             //autoincrement
             if (strpos($field->Extra, 'auto_increment') !== false)
@@ -156,12 +156,16 @@ class DBHandler
 
             $str = '';
             if (!$is_assoc) {
-                foreach ($arr as $item)
-                    $str .= "'$item', ";
+                foreach ($arr as $item) {
+                    if (strlen($item) > 0)
+                        $str .= "'$item', ";
+                }
 
             } else {
-                foreach ($arr as $index => $item)
-                    $str .= "'$index' => '$item',";
+                foreach ($arr as $index => $item) {
+                    if (strlen($item) > 0)
+                        $str .= "'$index' => '$item',";
+                }
             }
 
             return "[ " . rtrim($str, ', ') . "]";

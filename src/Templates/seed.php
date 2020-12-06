@@ -18,7 +18,9 @@ class {name} extends Seeder
 {
     public function run()
     {
-        $data = [{seeder}];
+        $data = [
+        {seeder}
+        ];
 
         // Using Model
         /*$model = new {name}Model();
@@ -31,10 +33,11 @@ class {name} extends Seeder
         }*/
 
         //Using Query Builder Class
-        try
+        try {
             $this->db->table('{table}')->insertBatch($data);
 
-        catch (ReflectionException $e)
+        } catch (ReflectionException $e) {
             throw new Exception($e->getMessage());
+        }
     }
 }
