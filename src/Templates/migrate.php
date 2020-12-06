@@ -33,6 +33,12 @@ class {name} extends Migration
 
     public function down()
     {
+        //disable Foreign Key Check
+        $this->db->disableForeignKeyChecks();
+
         $this->forge->dropTable('{table}');
+
+        //enable Foreign Key Check
+        $this->db->enableForeignKeyChecks();
     }
 }
