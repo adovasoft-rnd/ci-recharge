@@ -100,8 +100,12 @@ class MakeMigration extends BaseCommand
         if (is_bool($alltables) && $alltables === true) {
             $tableNames = $this->db->getTableNames();
 
-            foreach ($tableNames as $tableName)
+            foreach ($tableNames as $tableName) {
+                //disable framework generation tables
+                if ($tableName == 'migrations' || $tableName == 'ci_sessions') continue;
+
                 $this->generateMigration($timestamp, $ns, $targetDir, NULL, $tableName);
+            }
         } else
             $this->generateMigration($timestamp, $ns, $targetDir, $name, $table);
     }
