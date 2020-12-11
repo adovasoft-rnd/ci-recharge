@@ -131,7 +131,7 @@ class DBHandler
 
             //autoincrement
             if (strpos($field->Extra, 'auto_increment') !== false)
-                $singleField .= "\n\t\t\t'unique' => true,";
+                $singleField .= "\n\t\t\t'auto_increment' => true,";
 
             $singleField .= "\n\t\t],";
             $fieldString .= $singleField;
