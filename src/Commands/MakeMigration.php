@@ -6,7 +6,10 @@ use Hafiz\Libraries\DBHandler;
 use Hafiz\Libraries\FileHandler;
 
 /**
- * Creates a new Entity file.
+ * Make Command Class for creating a migration Instance skeleton class
+ * Model can be created as skeleton or
+ * user can point a Table to get property for model
+ *
  * @package CodeIgniter\Commands
  * @extend BaseCommand
  */
@@ -34,7 +37,7 @@ class MakeMigration extends BaseCommand
      * The Command's short description
      * @var string
      */
-    protected $description = 'Creates a Model file [NB: FOLDER NAMED `Entities` IS NECESSARY].';
+    protected $description = 'Creates a Migration file.';
 
     /**
      * The Command's usage
@@ -47,7 +50,7 @@ class MakeMigration extends BaseCommand
      * @var array
      */
     protected $arguments = [
-        'migrate_name' => 'The database model file name',
+        'migrate_name' => 'The Migration file name',
     ];
 
     /**
@@ -61,14 +64,13 @@ class MakeMigration extends BaseCommand
     ];
 
     /**
-     * Creates a new entity file with the current timestamp.
+     * Creates a new migration file with the current timestamp.
      * @param array $params
      * @return void
      */
     public function run(array $params = [])
     {
         helper(['inflector', 'filesystem']);
-
         $this->file = new FileHandler();
         $this->db = new DBHandler();
 
@@ -78,7 +80,7 @@ class MakeMigration extends BaseCommand
         $alltables = $params['-all'] ?? CLI::getOption('all');
 
         if (empty($name) && is_null($alltables))
-            $name = CLI::prompt(lang('Recharge.migrateName'));
+            $name = CLI::prompt(lang('Recharge.migrateName'), null, 'string');
 
         if (empty($name) && is_null($alltables)) {
             CLI::error(lang('Recharge.badName'));
@@ -98,8 +100,12 @@ class MakeMigration extends BaseCommand
         if (is_bool($alltables) && $alltables === true) {
             $tableNames = $this->db->getTableNames();
 
-            foreach ($tableNames as $tableName)
+            foreach ($tableNames as $tableName) {
+                //disable framework generation tables
+                if ($tableName == 'migrations' || $tableName == 'ci_sessions') continue;
+
                 $this->generateMigration($timestamp, $ns, $targetDir, NULL, $tableName);
+            }
         } else
             $this->generateMigration($timestamp, $ns, $targetDir, $name, $table);
     }
@@ -115,7 +121,7 @@ class MakeMigration extends BaseCommand
     {
         if (empty($name)) {
             $fileName = $timestamp . 'create_' . underscore($table) . '_table.php';
-            $migrateName = pascalize($table);
+            $migrateName = pascalize('create_' . underscore($table) . '_table');
         } else {
             $fileName = $timestamp . underscore($name) . '.php';
             $migrateName = pascalize($name);
@@ -148,7 +154,7 @@ class MakeMigration extends BaseCommand
                     CLI::error(lang('Recharge.writeError', [$filepath]));
                     return;
                 }
-                CLI::write('Created file: ' . CLI::color(basename($filepath), 'green'));
+                CLI::write('Created file: ' . CLI::color($filepath, 'green'));
             }
         }
     }

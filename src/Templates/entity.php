@@ -1,4 +1,8 @@
-<?php /**
+<?php namespace {namespace}\Entities;
+
+use CodeIgniter\Entity;
+
+/**
  * Short description of this class usages
  *
  * @class {name}
@@ -8,48 +12,26 @@
  * @created_at {created_at}
  */
 
-class
-{
-name
-}
-
-Entities;
-
-namespace {
-
-    namespace} extends Entity
+class {name} extends Entity
 {
     /**
      * Database Table Column names
-     * index = column
-     * value = default
-     * Eg: ['balance' => 0.00, 'name' => null]
      */
-    protected
-    $attributes = [{
-    attributes}]
+    protected $attributes = [{attributes}];
 
     /**
-     * Database Table Column To Property
-     * Mapper
-     * index = property
-     * value = column
-     * Eg: ['balance' => 'saving', 'phone' => 'mobile']
+     * Database Table Column To Property Mapper
      */
     protected $datamap = [];
 
     /**
      * Property That will use timestamp
      */
-    protected $dates = [{
-    dates}]
+    protected $dates = [{dates}];
 
     /**
      * Property Types Casted
-     * Eg: ['is_banned' => 'boolean',
-     * 'is_banned_nullable' => '?boolean']
      */
-    protected $casts = [{
-    casts}]
+    protected $casts = [{casts}];
 
 }

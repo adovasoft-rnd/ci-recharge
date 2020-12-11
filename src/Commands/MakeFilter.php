@@ -5,7 +5,11 @@ use CodeIgniter\CLI\CLI;
 use Hafiz\Libraries\FileHandler;
 
 /**
- * Creates a new Filter file.
+ * Make command class for a Filter skeleton
+ * class generation
+ * skeleton has session and validation instance
+ * already implemented
+ *
  * @package CodeIgniter\Commands
  * @extend BaseCommand
  */
@@ -29,7 +33,7 @@ class MakeFilter extends BaseCommand
      * The Command's short description
      * @var string
      */
-    protected $description = 'Creates a filter file.';
+    protected $description = 'Creates a skeleton Filter file.';
 
     /**
      * The Command's usage
@@ -42,7 +46,7 @@ class MakeFilter extends BaseCommand
      * @var array
      */
     protected $arguments = [
-        'filter_name' => 'The Configuration file name',
+        'filter_name' => 'The Filter file name',
     ];
 
     /**
@@ -50,7 +54,7 @@ class MakeFilter extends BaseCommand
      * @var array
      */
     protected $options = [
-        '-n' => 'Set Configuration namespace',
+        '-n' => 'Set Filter namespace',
     ];
 
     /**
@@ -60,29 +64,32 @@ class MakeFilter extends BaseCommand
      */
     public function run(array $params = [])
     {
+        /**
+         *
+         */
+        helper(['inflector', 'filesystem']);
+        $file = new FileHandler();
+
         $name = array_shift($params);
 
         //if namespace is given
         $ns = $params['-n'] ?? CLI::getOption('n');
 
         if (empty($name))
-            $name = CLI::prompt(lang('Recharge.filterName'));
+            $name = CLI::prompt(lang('Recharge.filterName'), null, 'required|string');
 
         if (empty($name)) {
             CLI::error(lang('Recharge.badName'));
             return;
         }
 
-        helper(['inflector', 'filesystem']);
-
-        $file = new FileHandler();
-
         //namespace locator
         $nsinfo = $file->getNamespaceInfo($ns, 'App');
-        //class & file name
-        $name = pascalize($name) . ((stripos('filter', $name) == false) ? 'Filter' : '');
         $ns = $nsinfo['ns'];
         $targetDir = $nsinfo['path'] . '/Filters/';
+
+        //class & file name
+        $name = pascalize($name) . ((stripos($name, 'filter') == false) ? 'Filter' : '');
         $filepath = $targetDir . $name . '.php';
 
         if ($file->verifyDirectory($filepath)) {
@@ -98,7 +105,7 @@ class MakeFilter extends BaseCommand
                     return;
                 }
 
-                CLI::write('Created file: ' . CLI::color(basename($filepath), 'green'));
+                CLI::write('Created file: ' . CLI::color($filepath, 'green'));
             }
         }
     }

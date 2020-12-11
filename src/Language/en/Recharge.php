@@ -18,7 +18,7 @@ return [
     'nameEntity' => 'Name the Entity File',
 
     /* Migration */
-    'migrationName' => 'Name the Migration File',
+    'migrateName' => 'Name the Migration File',
 
     /* Filter */
     'filterName' => 'Name the Filter File',

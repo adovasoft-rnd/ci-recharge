@@ -1,4 +1,8 @@
-<?php /**
+<?php namespace {namespace}\Models;
+
+use CodeIgniter\Model;
+
+/**
  * Short description of this class usages
  *
  * @class {name}
@@ -8,46 +12,30 @@
  * @created_at {created_at}
  */
 
-class
-{
-name
-}
-
-Models;
-
-namespace {
-
-    namespace} extends Model
+class {name} extends Model
 {
     /**
      * Table Configuration
      */
-    protected
-    $table = '{table}';
-    protected
-    $primaryKey = '{primary_id}';
+    protected $table = '{table}';
+    protected $primaryKey = '{primary_id}';
 
     /**
      * Model & Table Column Customization
      */
-    protected
-    $allowedFields = [{
-    attributes}]
+    protected $allowedFields = [{attributes}];
     protected $useTimestamps = true;
     protected $dateFormat = 'datetime';
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
-    {
-        delete_field}
+    {delete_field}
 
     /**
      * Return Configuration
      */
     protected $returnType = 'object';
-    protected $useSoftDeletes = {
-    soft_delete}
-    protected $validationRules = {
-    rules}
+    protected $useSoftDeletes = {soft_delete};
+    protected $validationRules = {rules};
     protected $validationMessages = [];
     protected $skipValidation = true;
 

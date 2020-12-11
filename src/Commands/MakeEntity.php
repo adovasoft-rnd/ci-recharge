@@ -6,7 +6,11 @@ use Hafiz\Libraries\DBHandler;
 use Hafiz\Libraries\FileHandler;
 
 /**
- * Creates a new Entity file.
+ * Make command class that create a Entity class
+ * from user input with specific namespace
+ * or from a table with all attributes
+ * name of entity will be translated as singular
+ *
  * @package CodeIgniter\Commands
  * @extend BaseCommand
  */
@@ -30,7 +34,7 @@ class MakeEntity extends BaseCommand
      * The Command's short description
      * @var string
      */
-    protected $description = 'Creates a entity file [NB: FOLDER NAMED `Entities` IS NECESSARY].';
+    protected $description = 'Creates a Entity file skeleton or from database Table.';
 
     /**
      * The Command's usage
@@ -43,7 +47,7 @@ class MakeEntity extends BaseCommand
      * @var array
      */
     protected $arguments = [
-        'entity_name' => 'The database entity file name',
+        'entity_name' => 'The Entity file name',
     ];
 
     /**
@@ -51,7 +55,7 @@ class MakeEntity extends BaseCommand
      * @var array
      */
     protected $options = [
-        '-n' => 'Set entity namespace',
+        '-n' => 'Set entity Namespace',
         '-t' => 'Set entity Database table',
 
     ];
@@ -63,22 +67,21 @@ class MakeEntity extends BaseCommand
      */
     public function run(array $params = [])
     {
+        helper(['inflector', 'filesystem']);
+        $file = new FileHandler();
+
         $name = array_shift($params);
         $ns = $params['-n'] ?? CLI::getOption('n');
         $table = $params['-t'] ?? CLI::getOption('t');
 
         if (empty($name)) {
-            $name = CLI::prompt(lang('Recharge.nameEntity'));
+            $name = CLI::prompt(lang('Recharge.nameEntity'), null, 'required|string');
         }
 
         if (empty($name)) {
             CLI::error(lang('Recharge.badName'));
             return;
         }
-
-        helper(['inflector', 'filesystem']);
-
-        $file = new FileHandler();
 
         //namespace locator
         $nsinfo = $file->getNamespaceInfo($ns, 'App');
@@ -90,9 +93,11 @@ class MakeEntity extends BaseCommand
         $filepath = $targetDir . $name . '.php';
 
         if ($file->verifyDirectory($filepath)) {
+
             //do we have to add table info
             if (!empty($table)) {
                 $db = new DBHandler();
+
                 if ($db->checkTableExist($table)) {
                     $properties = $db->getEntityProperties($table);
                     extract($properties);
@@ -112,7 +117,7 @@ class MakeEntity extends BaseCommand
                     return;
                 }
 
-                CLI::write('Created file: ' . CLI::color(basename($filepath), 'green'));
+                CLI::write('Created file: ' . CLI::color($filepath, 'green'));
             }
         }
     }

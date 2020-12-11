@@ -3,7 +3,7 @@ CI-recharge is a CLI Tools for skeleton file generation for **CodeIgniter4** PHP
 It is currently offering only skeleton generation using the **php spark make** commands.
 Default Namespace for all files are **App** and location will be detected from autoloader services.
 ## Features
-This are the currently available features @1.0.0
+This are the currently available features @1.9.3
 - Configuration File 
 - Configuration File with Namespace
 - Basic Controller File

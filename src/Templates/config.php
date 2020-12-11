@@ -1,4 +1,8 @@
-<?php /**
+<?php namespace {namespace};
+
+use CodeIgniter\Config\BaseConfig;
+
+/**
  * Short description of this class usages
  *
  * @class {name}
@@ -8,15 +12,7 @@
  * @created_at {created_at}
  */
 
-class
-{
-name
-}
-
-
-namespace {
-
-    namespace} extends BaseConfig
+class {name} extends BaseConfig
 {
     //
 }

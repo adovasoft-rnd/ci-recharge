@@ -6,13 +6,13 @@ use Hafiz\Libraries\DBHandler;
 use Hafiz\Libraries\FileHandler;
 
 /**
- * Make Commadn for Seeder File Generation Class
- * Seeder can be skeleton aor loaded from a database table
+ * Make Command Class for a skeleton Model Class
+ * model Class that collect property from table
  *
  * @package CodeIgniter\Commands
  * @extend BaseCommand
  */
-class MakeSeeder extends BaseCommand
+class MakeModel extends BaseCommand
 {
 
     /**
@@ -26,26 +26,26 @@ class MakeSeeder extends BaseCommand
      * The Command's name
      * @var string
      */
-    protected $name = 'make:seed';
+    protected $name = 'make:model';
 
     /**
      * The Command's short description
      * @var string
      */
-    protected $description = 'Creates a Seeder file.';
+    protected $description = 'Creates a Model file.';
 
     /**
      * The Command's usage
      * @var string
      */
-    protected $usage = 'make:seed [seed_name] [Options]';
+    protected $usage = 'make:model [model_name] [Options]';
 
     /**
      * The Command's Arguments
      * @var array
      */
     protected $arguments = [
-        'seed_name' => 'The Seeder file name',
+        'model_name' => 'The Model file name',
     ];
 
     /**
@@ -53,9 +53,8 @@ class MakeSeeder extends BaseCommand
      * @var array
      */
     protected $options = [
-        '-n' => 'Set seed namespace',
-        '-t' => 'Set seed Database table',
-
+        '-n' => 'Set model namespace',
+        '-t' => 'Set Model Database table',
     ];
 
     /**
@@ -73,7 +72,7 @@ class MakeSeeder extends BaseCommand
         $table = $params['-t'] ?? CLI::getOption('t');
 
         if (empty($name)) {
-            $name = CLI::prompt(lang('Recharge.nameSeed'));
+            $name = CLI::prompt(lang('Recharge.modelName'), null, 'required|string');
         }
 
         if (empty($name)) {
@@ -85,25 +84,51 @@ class MakeSeeder extends BaseCommand
         $nsinfo = $file->getNamespaceInfo($ns, 'App');
 
         //class & file name
-        $name = singular(pascalize($name)) . ((stripos($name, 'seeder') == false) ? 'Seeder' : '');
         $ns = $nsinfo['ns'];
-        $targetDir = $nsinfo['path'] . '/Database/Seeds/';
+        $targetDir = $nsinfo['path'] . '/Models/';
+        $name = singular(pascalize($name)) . (stripos($name, 'Model') === FALSE ? 'Model' : '');
         $filepath = $targetDir . $name . '.php';
 
         if ($file->verifyDirectory($filepath)) {
             //do we have to add table info
             if (!empty($table)) {
                 $db = new DBHandler();
-                if ($db->checkTableExist($table))
-                    $properties = $db->generateRowArray($table);
+                if ($db->checkTableExist($table)) {
+                    $properties = $db->getModelProperties($table);
+                    extract($properties);
+                }
             }
 
-            $data = ['{namespace}' => $ns, '{name}' => $name, '{created_at}' => date("d F, Y h:i:s A"),
-                '{seeder}' => $properties ?? NULL, '{table}' => $table ?? NULL];
+            //for soft deleted option
+            $softDelete = 'false';
+            $deleteField = '';
+            $validationRules = '[]';
+
+            if (isset($attributes)) {
+                if (stripos($attributes, 'deleted_at') !== false) {
+                    $softDelete = 'true';
+                    $deleteField = "protected \$deletedField  = 'deleted_at';";
+                }
+            }
+            if (isset($rules)) {
+                $validationRules = $rules;
+            }
+
+            $data = [
+                '{namespace}' => $ns,
+                '{name}' => $name,
+                '{created_at}' => date("d F, Y h:i:s A"),
+                '{attributes}' => $attributes ?? NULL,
+                '{table}' => $table ?? NULL,
+                '{primary_id}' => $primary_id ?? NULL,
+                '{delete_field}' => $deleteField,
+                '{soft_delete}' => $softDelete,
+                '{rules}' => $validationRules,
+            ];
 
             //check a directory exist
             if ($file->checkFileExist($filepath) == true) {
-                $template = $file->renderTemplate('seed', $data);
+                $template = $file->renderTemplate('model', $data);
 
 
                 if (!write_file($filepath, $template)) {
