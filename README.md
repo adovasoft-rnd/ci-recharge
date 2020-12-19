@@ -1,5 +1,8 @@
 # Codeigniter4 Recharge
-[![Latest Stable Version](https://poser.pugx.org/phpunit/phpunit/v)](//packagist.org/packages/phpunit/phpunit) [![Total Downloads](https://poser.pugx.org/phpunit/phpunit/downloads)](//packagist.org/packages/phpunit/phpunit) [![Latest Unstable Version](https://poser.pugx.org/phpunit/phpunit/v/unstable)](//packagist.org/packages/phpunit/phpunit) [![License](https://poser.pugx.org/phpunit/phpunit/license)](//packagist.org/packages/phpunit/phpunit)
+[![Latest Stable Version](https://poser.pugx.org/hafijul233/ci-recharge/v)](//packagist.org/packages/hafijul233/ci-recharge) 
+[![Total Downloads](https://poser.pugx.org/hafijul233/ci-recharge/downloads)](//packagist.org/packages/hafijul233/ci-recharge) 
+[![Latest Unstable Version](https://poser.pugx.org/hafijul233/ci-recharge/v/unstable)](//packagist.org/packages/hafijul233/ci-recharge) 
+[![License](https://poser.pugx.org/hafijul233/ci-recharge/license)](//packagist.org/packages/hafijul233/ci-recharge)
 
 CI-recharge is a CLI Tools for skeleton file generation for **CodeIgniter4** PHP Framework. 
 It is currently offering only skeleton generation using the **php spark make** commands.
