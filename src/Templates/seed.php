@@ -1,7 +1,6 @@
 <?php namespace {namespace}\Database\Seeds;
 
 use CodeIgniter\Database\Seeder;
-use Exception;
 use ReflectionException;
 
 /**
@@ -10,7 +9,7 @@ use ReflectionException;
  * @class {name}
  * @generated_by CI-Recharge
  * @package {namespace}
- * @extend Entity
+ * @extend Seeder
  * @created_at {created_at}
  */
 
@@ -37,7 +36,7 @@ class {name} extends Seeder
             $this->db->table('{table}')->insertBatch($data);
 
         } catch (ReflectionException $e) {
-            throw new Exception($e->getMessage());
+            throw new ReflectionException($e->getMessage());
         }
     }
 }
