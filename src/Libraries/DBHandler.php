@@ -6,7 +6,12 @@ use Config\Database;
 use Throwable;
 
 /**
- * Class DBHandler
+ * @class DBHandler
+ * Handle all db collection and table
+ * column generate
+ *
+ * @author hafijul233
+ *
  * @package Hafiz\Libraries
  */
 class DBHandler
@@ -18,6 +23,7 @@ class DBHandler
 
     /**
      * DBHandler constructor.
+     *
      * @param string|null $group
      */
     public function __construct(string $group = null)
@@ -27,7 +33,7 @@ class DBHandler
             $this->db->initialize();
         } catch (Throwable $exception) {
             CLI::error($exception->getMessage());
-            exit(1);
+            die();
         }
     }
 
@@ -47,11 +53,15 @@ class DBHandler
     }
 
     /**
+     * Return a list of All tables
+     * Name from a specific database group
+     * or default on
+     *
      * @return array
      */
-    public function getTableNames(): ?array
+    public function getTableNames(): array
     {
-        $tables = $this->db->listTables();
+        $tables = $this->db->listTables() ?? [];
 
         if (empty($tables)) {
             CLI::error(lang('Recharge.TablesNotFound'));
@@ -62,7 +72,11 @@ class DBHandler
     }
 
     /**
+     * return a list of all fields and
+     * key generated from a table
+     *
      * @param string $table
+     *
      * @return array
      */
     public function getTableInfos(string $table): array
@@ -79,7 +93,10 @@ class DBHandler
     }
 
     /**
+     * Generate Field array form a table
+     *
      * @param string $table
+     *
      * @return string
      */
     protected function generateField(string $table): ?string
@@ -118,16 +135,12 @@ class DBHandler
             //if field need null
             $singleField .= "\n\t\t\t'null' => " . (($field->Null == 'YES') ? 'true,' : 'false,');
 
-            if(!is_null($field->Default) && (strpos($field->Default, 'current_timestamp()') === FALSE))
+            if (!is_null($field->Default) && (strpos($field->Default, 'current_timestamp()') === FALSE))
                 $singleField .= "\n\t\t\t'default' => '$field->Default',";
 
             //unsigned
             if (strpos($field->Type, 'unsigned') !== false)
                 $singleField .= "\n\t\t\t'unsigned' => true,";
-
-/*            //Unique Key
-            if ($field->Key == 'UNI')
-                $singleField .= "\n\t\t\t'unique' => true,";*/
 
             //autoincrement
             if (strpos($field->Extra, 'auto_increment') !== false)
@@ -141,9 +154,15 @@ class DBHandler
     }
 
     /**
+     * Glue a array into a single string
+     *
      * @param array $arr
+     *
      * @param bool $is_assoc
+     *
      * @return string
+     * @author hafijul233
+     *
      */
     protected function getGluedString(array $arr, bool $is_assoc = false): string
     {
@@ -174,12 +193,14 @@ class DBHandler
 
     /**
      * @param string $table
+     *
      * @return string|null
      */
     protected function generateKeys(string $table): ?string
     {
         $index = $this->db->getIndexData($table);
 
+        $keys = [];
         $keys['primary'] = '';
         $keys['foreign'] = '';
         $keys['unique'] = '';
