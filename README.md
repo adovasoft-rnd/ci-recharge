@@ -59,26 +59,26 @@ Basic Syntax are given below for **make series**:
 
 |Command|syntax|
 |-------|------|
-|Config|`php spark make:config`|
-|Config with Namespace|`php spark make:config -n ns`|
-|Controller|`php spark make:controller cont`|
-|Controller with Namespace|`php spark make:controller cont -n ns`|
-|Controller with Parent|`php spark make:controller cont -b base`|
-|Controller with Parent and Namespace|`php spark make:controller cont -n ns -b base`|
-|REST Controller|`php spark make:controller cont -rest`|
-|REST Controller with Namespace|`php spark make:controller cont -n ns -rest`|
-|REST Controller with Parent|`php spark make:controller cont -b base -rest`|
-|REST Controller with Parent and Namespace|`php spark make:controller cont -n ns -b base -rest`|
-|Entity|`php spark make:entity en`|
-|Entiy with Namespace|`php spark make:entity en -n ns`|
-|Filter|`php spark make:filter fn`|
-|Filter with Namespace|`php spark make:filter fn -n ns`|
-|Migration|`php spark make:migrate mg`|
-|Migration with Namespace|`php spark make:migrate mg -n ns`|
-|Model|`php spark make:model md`|
-|Model with Namespace|`php spark make:model md -n ns`|
-|Seeder|`php spark make:seed sd`|
-|Seeder with Namespace|`php spark make:seed sd -n ns`|
+|Config|`php spark create:config`|
+|Config with Namespace|`php spark create:config -n ns`|
+|Controller|`php spark create:controller cont`|
+|Controller with Namespace|`php spark create:controller cont -n ns`|
+|Controller with Parent|`php spark create:controller cont -b base`|
+|Controller with Parent and Namespace|`php spark create:controller cont -n ns -b base`|
+|REST Controller|`php spark create:controller cont -rest`|
+|REST Controller with Namespace|`php spark create:controller cont -n ns -rest`|
+|REST Controller with Parent|`php spark create:controller cont -b base -rest`|
+|REST Controller with Parent and Namespace|`php spark create:controller cont -n ns -b base -rest`|
+|Entity|`php spark create:entity en`|
+|Entiy with Namespace|`php spark create:entity en -n ns`|
+|Filter|`php spark create:filter fn`|
+|Filter with Namespace|`php spark create:filter fn -n ns`|
+|Migration|`php spark create:migrate mg`|
+|Migration with Namespace|`php spark create:migrate mg -n ns`|
+|Model|`php spark create:model md`|
+|Model with Namespace|`php spark create:model md -n ns`|
+|Seeder|`php spark create:seed sd`|
+|Seeder with Namespace|`php spark create:seed sd -n ns`|
 
 ## Future Development
 1. Create new migration files from existing database tables
