@@ -31,7 +31,7 @@ class MakeMigration extends BaseCommand
      * The Command's name
      * @var string
      */
-    protected $name = 'make:migrate';
+    protected $name = 'create:migrate';
 
     /**
      * The Command's short description
@@ -43,7 +43,7 @@ class MakeMigration extends BaseCommand
      * The Command's usage
      * @var string
      */
-    protected $usage = 'make:migrate [migrate_name] [Options]';
+    protected $usage = 'create:migrate [migrate_name] [Options]';
 
     /**
      * The Command's Arguments

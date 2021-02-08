@@ -24,7 +24,7 @@ class MakeConfig extends BaseCommand
      * The Command's name
      * @var string
      */
-    protected $name = 'make:config';
+    protected $name = 'create:config';
 
     /**
      * The Command's short description
@@ -36,7 +36,7 @@ class MakeConfig extends BaseCommand
      * The Command's usage
      * @var string
      */
-    protected $usage = 'make:config [config_name] [Options]';
+    protected $usage = 'create:config [config_name] [Options]';
 
     /**
      * The Command's Arguments

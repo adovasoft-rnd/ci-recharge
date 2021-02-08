@@ -28,7 +28,7 @@ class MakeEntity extends BaseCommand
      * The Command's name
      * @var string
      */
-    protected $name = 'make:entity';
+    protected $name = 'create:entity';
 
     /**
      * The Command's short description
@@ -40,7 +40,7 @@ class MakeEntity extends BaseCommand
      * The Command's usage
      * @var string
      */
-    protected $usage = 'make:entity [entity_name] [Options]';
+    protected $usage = 'create:entity [entity_name] [Options]';
 
     /**
      * The Command's Arguments

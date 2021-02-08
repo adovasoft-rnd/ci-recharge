@@ -26,7 +26,7 @@ class MakeModel extends BaseCommand
      * The Command's name
      * @var string
      */
-    protected $name = 'make:model';
+    protected $name = 'create:model';
 
     /**
      * The Command's short description
@@ -38,7 +38,7 @@ class MakeModel extends BaseCommand
      * The Command's usage
      * @var string
      */
-    protected $usage = 'make:model [model_name] [Options]';
+    protected $usage = 'create:model [model_name] [Options]';
 
     /**
      * The Command's Arguments

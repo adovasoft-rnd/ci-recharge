@@ -26,7 +26,7 @@ class MakeSeeder extends BaseCommand
      * The Command's name
      * @var string
      */
-    protected $name = 'make:seed';
+    protected $name = 'create:seed';
 
     /**
      * The Command's short description
@@ -38,7 +38,7 @@ class MakeSeeder extends BaseCommand
      * The Command's usage
      * @var string
      */
-    protected $usage = 'make:seed [seed_name] [Options]';
+    protected $usage = 'create:seed [seed_name] [Options]';
 
     /**
      * The Command's Arguments

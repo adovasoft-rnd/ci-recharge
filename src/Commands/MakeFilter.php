@@ -27,7 +27,7 @@ class MakeFilter extends BaseCommand
      * The Command's name
      * @var string
      */
-    protected $name = 'make:filter';
+    protected $name = 'create:filter';
 
     /**
      * The Command's short description
@@ -39,7 +39,7 @@ class MakeFilter extends BaseCommand
      * The Command's usage
      * @var string
      */
-    protected $usage = 'make:filter [filter_name] [Options]';
+    protected $usage = 'create:filter [filter_name] [Options]';
 
     /**
      * The Command's Arguments

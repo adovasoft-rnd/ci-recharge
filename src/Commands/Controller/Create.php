@@ -25,7 +25,7 @@ class Create extends BaseCommand
      * The Command's name
      * @var string
      */
-    protected $name = 'make:controller';
+    protected $name = 'create:controller';
 
     /**
      * The Command's short description
@@ -37,7 +37,7 @@ class Create extends BaseCommand
      * The Command's usage
      * @var string
      */
-    protected $usage = 'make:controller [controller_name] [Options]';
+    protected $usage = 'create:controller [controller_name] [Options]';
 
     /**
      * The Command's Arguments
