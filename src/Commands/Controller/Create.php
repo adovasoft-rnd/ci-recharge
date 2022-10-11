@@ -25,7 +25,7 @@ class Create extends BaseCommand
      * The Command's name
      * @var string
      */
-    protected $name = 'make:controller';
+    protected $name = 'create:controller';
 
     /**
      * The Command's short description
@@ -37,7 +37,7 @@ class Create extends BaseCommand
      * The Command's usage
      * @var string
      */
-    protected $usage = 'make:controller [controller_name] [Options]';
+    protected $usage = 'create:controller [controller_name] [Options]';
 
     /**
      * The Command's Arguments
@@ -61,8 +61,8 @@ class Create extends BaseCommand
     /**
      * Creates a new Controller file with the current timestamp.
      * @param array $params
-     * @throws ReflectionException
      * @return void
+     * @throws ReflectionException
      */
     public function run(array $params = [])
     {
@@ -145,37 +145,7 @@ class Create extends BaseCommand
         $date = date("d F, Y h:i:s A");
 
         //Basic Controller Template
-        $basicTemplate = <<<EOD
-<?php namespace $ns\Controllers;
-
-$baseNameSpace
-
-/**
- * @class $name
- * @author CI-Recharge
- * @package $package
- * @extend $base
- * @created $date
- */
-
-
-class $name extends $base
-{
-    /**
-     * $name constructor
-     */
-    public function __construct() 
-    {
-    
-    }
-    
-    public function index()
-    {
-        echo 'Hello World!';
-    }
-}
-
-EOD;
+        $basicTemplate = '';
 
         //REST Controller Template
         $restTemplate = <<<EOD

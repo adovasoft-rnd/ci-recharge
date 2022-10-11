@@ -1,9 +1,18 @@
 # Codeigniter4 Recharge
+[![Build Status](https://scrutinizer-ci.com/g/hafijul233/ci-recharge/badges/build.png?b=master)](https://scrutinizer-ci.com/g/hafijul233/ci-recharge/build-status/master)
+[![Latest Stable Version](https://poser.pugx.org/hafijul233/ci-recharge/v)](//packagist.org/packages/hafijul233/ci-recharge) 
+[![Total Downloads](https://poser.pugx.org/hafijul233/ci-recharge/downloads)](//packagist.org/packages/hafijul233/ci-recharge) 
+[![Latest Unstable Version](https://poser.pugx.org/hafijul233/ci-recharge/v/unstable)](//packagist.org/packages/hafijul233/ci-recharge) 
+[![License](https://poser.pugx.org/hafijul233/ci-recharge/license)](//packagist.org/packages/hafijul233/ci-recharge)
+[![Code Intelligence Status](https://scrutinizer-ci.com/g/hafijul233/ci-recharge/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/hafijul233/ci-recharge/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/hafijul233/ci-recharge/?branch=master)
+
+
 CI-recharge is a CLI Tools for skeleton file generation for **CodeIgniter4** PHP Framework. 
 It is currently offering only skeleton generation using the **php spark make** commands.
 Default Namespace for all files are **App** and location will be detected from autoloader services.
 ## Features
-This are the currently available features @1.0.0
+Currently available features
 - Configuration File 
 - Configuration File with Namespace
 - Basic Controller File
@@ -61,10 +70,9 @@ Basic Syntax are given below for **make series**:
 |REST Controller with Parent|`php spark create:controller cont -b base -rest`|
 |REST Controller with Parent and Namespace|`php spark create:controller cont -n ns -b base -rest`|
 |Entity|`php spark create:entity en`|
-|Entity with Namespace|`php spark create:entity en -n ns`|
+|Entiy with Namespace|`php spark create:entity en -n ns`|
 |Filter|`php spark create:filter fn`|
 |Filter with Namespace|`php spark create:filter fn -n ns`|
-|Create Migration files of all Tables|`php spark create:migrate -all`|
 |Migration|`php spark create:migrate mg`|
 |Migration with Namespace|`php spark create:migrate mg -n ns`|
 |Model|`php spark create:model md`|
